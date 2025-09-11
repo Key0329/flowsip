@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圓形 -->
+  <circle cx="36" cy="36" r="32" fill="#3b82f6"/>
+  
+  <!-- 水滴圖示 -->
+  <g transform="translate(26, 22)">
+    <path d="M10 5 C10 2, 8 0, 5 0 C2 0, 0 2, 0 5 C0 8, 2 10, 5 10 C8 10, 10 8, 10 5 Z" 
+          fill="#ffffff"/>
+    <ellipse cx="3" cy="3" rx="1" ry="2" fill="#e0f2fe" opacity="0.7"/>
+  </g>
+  
+  <!-- 計時器圓環 -->
+  <g transform="translate(36, 46)">
+    <circle cx="0" cy="0" r="8" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="0" cy="0" r="8" fill="none" stroke="#ffffff" stroke-width="1.5" 
+            stroke-dasharray="33" stroke-dashoffset="16" 
+            stroke-linecap="round" transform="rotate(-90)"/>
+    <circle cx="0" cy="0" r="1" fill="#ffffff"/>
+  </g>
+</svg>

@@ -45,29 +45,29 @@ MVP 模式：僅實作核心計時功能和基礎 PWA 支援
 - [x] **T013** [P] useNotifications 基礎版 (`composables/useNotifications.ts` - 音效+視覺提醒) ✅
 
 ### Web Worker 計時系統
-- [ ] **T014** Timer Web Worker 實作 (`workers/timer-worker.ts` - 精準時間戳計時)
+- [x] **T014** Timer Web Worker 實作 (`workers/timer-worker.ts` - 精準時間戳計時) ✅
 
 ### UI 元件 (極簡版)
-- [ ] **T015** [P] 計時器顯示元件 (`components/Timer/Display.vue`)
-- [ ] **T016** [P] 控制按鈕元件 (`components/Timer/Controls.vue`)
-- [ ] **T017** [P] 模式切換元件 (`components/Timer/ModeSwitch.vue`)
+- [x] **T015** [P] 計時器顯示元件 (`components/Timer/Display.vue`) ✅
+- [x] **T016** [P] 控制按鈕元件 (`components/Timer/Controls.vue`) ✅
+- [x] **T017** [P] 模式切換元件 (`components/Timer/ModeSwitch.vue`) ✅
 
 ### 頁面
-- [ ] **T018** 主計時器頁面 (`pages/index.vue` - 整合所有元件)
-- [ ] **T019** 根應用程式 (`app.vue` - 基本佈局和主題)
+- [x] **T018** 主計時器頁面 (`pages/index.vue` - 整合所有元件) ✅
+- [x] **T019** 根應用程式 (`app.vue` - 基本佈局和主題) ✅
 
 ## Phase 3.4: PWA 整合
 
-- [ ] **T020** PWA 基礎配置 (`nuxt.config.ts` 中的 pwa 設定)
-- [ ] **T021** [P] PWA 圖示和清單檔案 (`public/icons/`, `public/manifest.json`)
-- [ ] **T022** [P] 基礎音效檔案 (`public/sounds/`)
+- [x] **T020** PWA 基礎配置 (`nuxt.config.ts` 中的 pwa 設定) ✅
+- [x] **T021** [P] PWA 圖示和清單檔案 (`public/icons/`, `public/manifest.json`) ✅
+- [x] **T022** [P] 基礎音效檔案 (`public/sounds/`) ✅
 
 ## Phase 3.5: 整合和精簡驗證
 
-- [ ] **T023** 主頁面整合測試（所有元件協作）
-- [ ] **T024** 計時精準度驗證（<2秒誤差）
-- [ ] **T025** PWA 安裝功能驗證
-- [ ] **T026** 基本效能檢查（<1s 啟動時間）
+- [x] **T023** 主頁面整合測試（所有元件協作） ✅
+- [x] **T024** 計時精準度驗證（<2秒誤差） ✅
+- [x] **T025** PWA 安裝功能驗證 ✅
+- [x] **T026** 基本效能檢查（<1s 啟動時間） ✅
 
 ## 相依關係圖
 

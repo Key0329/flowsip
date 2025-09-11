@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圓形 -->
+  <circle cx="256" cy="256" r="240" fill="#3b82f6"/>
+  
+  <!-- 水滴圖示 -->
+  <g transform="translate(180, 160)">
+    <path d="M76 40 C76 18, 58 0, 36 0 C14 0, -4 18, -4 40 C-4 62, 14 80, 36 80 C58 80, 76 62, 76 40 Z" 
+          fill="#ffffff"/>
+    <ellipse cx="20" cy="25" rx="8" ry="12" fill="#e0f2fe" opacity="0.7"/>
+  </g>
+  
+  <!-- 計時器圓環 -->
+  <g transform="translate(256, 320)">
+    <circle cx="0" cy="0" r="60" fill="none" stroke="#ffffff" stroke-width="6" opacity="0.3"/>
+    <circle cx="0" cy="0" r="60" fill="none" stroke="#ffffff" stroke-width="6" 
+            stroke-dasharray="251.3" stroke-dashoffset="125.65" 
+            stroke-linecap="round" transform="rotate(-90)"/>
+    <circle cx="0" cy="0" r="4" fill="#ffffff"/>
+  </g>
+  
+  <!-- 番茄圖示 -->
+  <g transform="translate(380, 140) scale(0.6)">
+    <path d="M40 20 C60 15, 80 25, 85 50 C85 75, 65 90, 40 90 C15 90, -5 75, 0 50 C5 25, 20 15, 40 20 Z" 
+          fill="#ef4444"/>
+    <path d="M35 15 C30 10, 25 12, 28 18 C32 12, 38 10, 42 15 C45 10, 50 12, 47 18 C50 15, 45 20, 40 18" 
+          fill="#22c55e"/>
+  </g>
+</svg>

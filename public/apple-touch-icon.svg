@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圓角矩形 (符合 iOS 圖示風格) -->
+  <rect x="0" y="0" width="180" height="180" rx="40" ry="40" fill="#3b82f6"/>
+  
+  <!-- 水滴圖示 -->
+  <g transform="translate(65, 55)">
+    <path d="M25 15 C25 7, 19 0, 12 0 C5 0, -1 7, -1 15 C-1 23, 5 30, 12 30 C19 30, 25 23, 25 15 Z" 
+          fill="#ffffff"/>
+    <ellipse cx="8" cy="9" rx="3" ry="4" fill="#e0f2fe" opacity="0.7"/>
+  </g>
+  
+  <!-- 計時器圓環 -->
+  <g transform="translate(90, 115)">
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.4"/>
+    <circle cx="0" cy="0" r="20" fill="none" stroke="#ffffff" stroke-width="3" 
+            stroke-dasharray="84" stroke-dashoffset="42" 
+            stroke-linecap="round" transform="rotate(-90)"/>
+    <circle cx="0" cy="0" r="2" fill="#ffffff"/>
+  </g>
+  
+  <!-- 番茄圖示 -->
+  <g transform="translate(125, 65) scale(0.4)">
+    <path d="M15 8 C20 6, 25 10, 27 20 C27 30, 20 36, 15 36 C10 36, 3 30, 5 20 C7 10, 10 6, 15 8 Z" 
+          fill="#ef4444"/>
+    <path d="M13 6 C11 4, 9 5, 10 7 C12 5, 14 4, 16 6 C17 4, 19 5, 18 7 C19 6, 17 8, 15 7" 
+          fill="#22c55e"/>
+  </g>
+  
+  <!-- 品牌文字 -->
+  <text x="90" y="160" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="14" font-weight="bold" fill="#ffffff">FlowSip</text>
+</svg>
