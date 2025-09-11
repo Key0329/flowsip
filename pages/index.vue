@@ -303,6 +303,8 @@ async function handleStart() {
 async function handlePause() {
   try {
     await timer.pause()
+    // 暫停時停止分頁標題提醒
+    notifications.stopTabTitleAlert()
   } catch (error) {
     showError('暫停計時器失敗：' + (error as Error).message)
   }
@@ -310,7 +312,13 @@ async function handlePause() {
 
 async function handleStop() {
   try {
+    // 重置模式選擇狀態，讓使用者可以重新選擇
+    selectedMode.value = null
+    customDuration.value = 0
+    
     await timer.stop()
+    // 停止時停止分頁標題提醒
+    notifications.stopTabTitleAlert()
   } catch (error) {
     showError('停止計時器失敗：' + (error as Error).message)
   }
@@ -419,16 +427,36 @@ onMounted(async () => {
     visualAlertsEnabled.value = true
   }
   
-  // 設定計時器完成回調
+  // 設定計時器回調
   timer.setCallbacks({
+    onTick: (remaining) => {
+      console.log('onTick 觸發，剩餘時間:', remaining, '秒')
+      // 在最後 30 秒開始顯示閃爍點提醒
+      if (remaining <= 30 && remaining > 0) {
+        const remainingSeconds = Math.ceil(remaining)
+        console.log('啟動倒數分頁標題提醒，剩餘:', remainingSeconds, '秒')
+        notifications.startTabTitleCountdown(remainingSeconds)
+      } else if (remaining > 30 && notifications.state.isTabTitleAlerting) {
+        // 如果還有超過30秒但分頁標題正在提醒，停止提醒
+        console.log('剩餘時間超過30秒，停止分頁標題提醒')
+        notifications.stopTabTitleAlert()
+      }
+    },
     onComplete: (record) => {
       console.log('計時完成！', record)
       
-      // 發送通知
-      const mode = record.mode === 'water' ? '喝水提醒' : '番茄鐘'
-      notifications.sendTimerCompleteNotification(mode, `${mode}時間到了！`, record.mode)
+      // 先顯示分頁標題跳動文字提醒（在alert之前）
+      const titles = {
+        water: '💧 喝水時間！',
+        pomodoro: '🍅 番茄鐘完成！'
+      }
+      notifications.startTabTitleAlert(titles[record.mode])
       
-      // 顯示完成提醒
+      // 然後發送其他通知（這會觸發alert）
+      notifications.sendTimerCompleteNotification(record.mode, record)
+      
+      // 最後顯示頁面內完成提醒
+      const mode = record.mode === 'water' ? '喝水提醒' : '番茄鐘'
       showSuccess(`${mode}完成！時間到了。`)
     }
   })

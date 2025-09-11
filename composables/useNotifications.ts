@@ -45,7 +45,10 @@ export interface NotificationAPI {
   /** 隱藏視覺提醒 */
   hideVisualAlert(): void
   
-  /** 啟動分頁標題提醒 */
+  /** 啟動分頁標題倒數提醒（閃爍點） */
+  startTabTitleCountdown(remainingSeconds: number): void
+  
+  /** 啟動分頁標題提醒（完成後跳動文字） */
   startTabTitleAlert(message: string): void
   
   /** 停止分頁標題提醒 */
@@ -402,11 +405,71 @@ export function useNotifications(): UseNotificationsReturn {
     }
   }
   
+  // 儲存當前倒數的秒數，用於實時更新
+  let currentCountdownSeconds = 0
+
   /**
-   * 啟動分頁標題提醒
+   * 啟動分頁標題提醒（倒數階段閃爍點）
+   */
+  function startTabTitleCountdown(remainingSeconds: number): void {
+    if (typeof document === 'undefined') return
+    
+    console.log('startTabTitleCountdown 被調用，剩餘秒數:', remainingSeconds)
+    
+    // 儲存原始標題
+    if (!originalTitle) {
+      originalTitle = document.title
+      console.log('儲存原始標題:', originalTitle)
+    }
+    
+    // 更新當前倒數秒數
+    currentCountdownSeconds = remainingSeconds
+    
+    // 如果已經在倒數提醒中，只更新秒數，不重新設定間隔
+    if (state.isTabTitleAlerting && titleAlertInterval) {
+      return
+    }
+    
+    // 停止現有的提醒
+    stopTabTitleAlert()
+    
+    state.isTabTitleAlerting = true
+    
+    // 閃爍點的動畫狀態
+    let dotCount = 0
+    
+    // 立即設定一次標題
+    updateCountdownTitle(dotCount)
+    
+    titleAlertInterval = window.setInterval(() => {
+      dotCount = (dotCount + 1) % 6 // 6個狀態的循環
+      updateCountdownTitle(dotCount)
+    }, 500) // 0.5秒切換一次，創造閃爍效果
+    
+    console.log('倒數分頁標題間隔已設定')
+  }
+  
+  /**
+   * 更新倒數標題顯示
+   */
+  function updateCountdownTitle(dotCount: number): void {
+    // 計算顯示的分鐘和秒數
+    const minutes = Math.floor(currentCountdownSeconds / 60)
+    const seconds = currentCountdownSeconds % 60
+    const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`
+    
+    // 創建閃爍點動畫
+    const dots = '●'.repeat((dotCount % 3) + 1) + '○'.repeat(2 - (dotCount % 3))
+    document.title = `${dots} ${timeString} ${dots}`
+  }
+
+  /**
+   * 啟動分頁標題提醒（完成後跳動文字）
    */
   function startTabTitleAlert(message: string): void {
     if (typeof document === 'undefined') return
+    
+    console.log('startTabTitleAlert 被調用，訊息:', message)
     
     // 儲存原始標題
     if (!originalTitle) {
@@ -418,17 +481,25 @@ export function useNotifications(): UseNotificationsReturn {
     
     state.isTabTitleAlerting = true
     
-    // 交替顯示提醒訊息和時間提示
-    let isAlertMessage = true
-    const alertMessage = message
+    // 跳動的完成訊息 - 確保訊息不為空
+    const alertMessage = message || '🎉 計時完成！'
     const timeMessage = '⏰ 時間到了！'
     
+    console.log('設定完成提醒訊息:', alertMessage, '和', timeMessage)
+    
+    // 立即顯示提醒訊息
     document.title = alertMessage
     
     titleAlertInterval = window.setInterval(() => {
-      document.title = isAlertMessage ? timeMessage : alertMessage
-      isAlertMessage = !isAlertMessage
+      if (document.title === alertMessage) {
+        document.title = timeMessage
+      } else {
+        document.title = alertMessage
+      }
+      console.log('跳動文字切換，當前標題:', document.title)
     }, 1000)
+    
+    console.log('完成提醒間隔已設定')
   }
   
   /**
@@ -513,6 +584,7 @@ export function useNotifications(): UseNotificationsReturn {
     stopAlertSound,
     showVisualAlert,
     hideVisualAlert,
+    startTabTitleCountdown,
     startTabTitleAlert,
     stopTabTitleAlert,
     dismissAllAlerts,
