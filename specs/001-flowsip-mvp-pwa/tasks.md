@@ -17,32 +17,32 @@ MVP 模式：僅實作核心計時功能和基礎 PWA 支援
 
 ## Phase 3.1: 專案設定
 
-- [ ] **T001** 建立 Nuxt 4 專案結構 (`nuxt.config.ts`, `package.json`, 目錄結構)
-- [ ] **T002** 安裝核心相依套件 (Nuxt 4, UnoCSS, @vite-pwa/nuxt, idb, @vueuse/core)
-- [ ] **T003** [P] 配置開發工具 (ESLint, TypeScript, Vitest, Playwright)
+- [x] **T001** 建立 Nuxt 4 專案結構 (`nuxt.config.ts`, `package.json`, 目錄結構) ✅
+- [x] **T002** 安裝核心相依套件 (Nuxt 4, UnoCSS, @vite-pwa/nuxt, idb, @vueuse/core) ✅
+- [x] **T003** [P] 配置開發工具 (ESLint, TypeScript, Vitest, Playwright) ✅
 
 ## Phase 3.2: 測試優先 (TDD) ⚠️ 必須在 3.3 前完成
 **關鍵：這些測試必須先寫且必須失敗，才能開始實作**
 
 ### 契約測試（MVP 精簡版）
-- [ ] **T004** [P] TimerAPI 契約測試：start/stop 方法 (`tests/contract/timer-api.test.ts`)
-- [ ] **T005** [P] StorageAPI 契約測試：save/load 基本操作 (`tests/contract/storage-api.test.ts`)
+- [x] **T004** [P] TimerAPI 契約測試：start/stop 方法 (`tests/contract/timer-api.test.ts`) ✅
+- [x] **T005** [P] StorageAPI 契約測試：save/load 基本操作 (`tests/contract/storage-api.test.ts`) ✅
 
 ### E2E 測試（MVP 核心場景）
-- [ ] **T006** [P] E2E：背景計時準確度測試 (`tests/e2e/background-timing.spec.ts`)
-- [ ] **T007** [P] E2E：離線啟動功能測試 (`tests/e2e/offline-startup.spec.ts`) 
-- [ ] **T008** [P] E2E：通知拒絕後的替代提醒 (`tests/e2e/notification-fallback.spec.ts`)
+- [x] **T006** [P] E2E：背景計時準確度測試 (`tests/e2e/background-timing.spec.ts`) ✅
+- [x] **T007** [P] E2E：離線啟動功能測試 (`tests/e2e/offline-startup.spec.ts`) ✅
+- [x] **T008** [P] E2E：通知拒絕後的替代提醒 (`tests/e2e/notification-fallback.spec.ts`) ✅
 
 ## Phase 3.3: 核心實作（僅在測試失敗後）
 
 ### 型別和資料模型
-- [ ] **T009** [P] 基礎型別定義 (`types/index.ts` - TimerState, UserSettings, ActivityRecord)
-- [ ] **T010** [P] 資料驗證工具 (`utils/validation.ts`)
+- [x] **T009** [P] 基礎型別定義 (`types/index.ts` - TimerState, UserSettings, ActivityRecord) ✅
+- [x] **T010** [P] 資料驗證工具 (`utils/validation.ts`) ✅
 
 ### 核心 Composables (MVP 版)
-- [ ] **T011** [P] useTimer composable 基礎版 (`composables/useTimer.ts` - 僅 start/stop/狀態)
-- [ ] **T012** [P] useStorage composable 精簡版 (`composables/useStorage.ts` - localStorage 僅設定)
-- [ ] **T013** [P] useNotifications 基礎版 (`composables/useNotifications.ts` - 音效+視覺提醒)
+- [x] **T011** [P] useTimer composable 基礎版 (`composables/useTimer.ts` - 僅 start/stop/狀態) ✅
+- [x] **T012** [P] useStorage composable 精簡版 (`composables/useStorage.ts` - localStorage 僅設定) ✅
+- [x] **T013** [P] useNotifications 基礎版 (`composables/useNotifications.ts` - 音效+視覺提醒) ✅
 
 ### Web Worker 計時系統
 - [ ] **T014** Timer Web Worker 實作 (`workers/timer-worker.ts` - 精準時間戳計時)

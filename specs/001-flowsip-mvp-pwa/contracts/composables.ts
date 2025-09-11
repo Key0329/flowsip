@@ -7,6 +7,9 @@
 // useTimer Composable
 // ============================================================================
 
+// Vue 型別匯入
+import type { Ref, ComputedRef } from 'vue'
+
 export interface TimerComposable {
   // 響應式狀態
   state: Ref<TimerState>;
@@ -374,6 +377,3 @@ declare module '#app' {
     $stats: StatsComposable;
   }
 }
-
-// Vue 型別匯入
-import type { Ref, ComputedRef } from 'vue'
