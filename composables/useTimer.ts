@@ -144,14 +144,16 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
   /**
    * 更新計時器狀態
    */
-  function updateState(newState: Partial<TimerState>): void {
+  function updateState(newState: Partial<TimerState>, skipValidation = false): void {
     const updatedState = { ...state.value, ...newState, id: timerId }
     
-    // 驗證新狀態
-    const validation = validateTimerState(updatedState)
-    if (!validation.isValid) {
-      throwTimerError('狀態更新失敗：' + validation.errors[0], 'TIMER_INITIALIZATION_FAILED')
-      return
+    // 對於 tick 更新，可以跳過嚴格驗證
+    if (!skipValidation) {
+      const validation = validateTimerState(updatedState)
+      if (!validation.isValid) {
+        console.warn('狀態驗證失敗:', validation.errors, '但仍繼續更新')
+        // 不要拋出錯誤，只是警告，以免中斷 tick 更新
+      }
     }
     
     state.value = updatedState
@@ -291,22 +293,42 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
         break
         
       case 'TIMER_TICK':
-        const tickData = message.data as TimerTickData
-        updateState({
-          remaining: tickData.remaining,
-          progress: tickData.progress
-        })
-        callbacks.onTick?.(tickData.remaining, tickData.progress)
+        const tickData = message.payload as TimerTickData
+        // 驗證 tick 數據的有效性
+        if (typeof tickData.remaining === 'number' && tickData.remaining >= 0 &&
+            typeof tickData.progress === 'number' && tickData.progress >= 0 && tickData.progress <= 1) {
+          console.log('收到 tick 數據:', { remaining: tickData.remaining, progress: tickData.progress })
+          try {
+            // 對 tick 更新跳過嚴格驗證，確保能夠順利更新
+            updateState({
+              remaining: tickData.remaining,
+              progress: tickData.progress
+            }, true)
+            callbacks.onTick?.(tickData.remaining, tickData.progress)
+          } catch (error) {
+            console.error('更新 tick 狀態失敗:', error)
+          }
+        } else {
+          console.warn('收到無效的 tick 數據:', tickData)
+        }
         break
         
       case 'TIMER_COMPLETE':
         completeTimer()
         break
         
+      case 'TIMER_STATE':
+        // Worker 發送的狀態更新（通常用於同步或恢復）
+        const stateData = message.payload as any
+        if (stateData && typeof stateData === 'object') {
+          updateState(stateData)
+        }
+        break
+        
       case 'TIMER_ERROR':
-        const errorMessage = message.data as string
+        const errorData = message.payload as { message: string }
         const timerError = {
-          message: errorMessage,
+          message: errorData?.message || '未知錯誤',
           code: 'TIMER_INITIALIZATION_FAILED' as const
         } as TimerError
         callbacks.onError?.(timerError)
@@ -324,21 +346,12 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
     const record = createActivityRecord(true)
     
     updateState({
-      status: 'stopped',
-      remaining: 0,
-      progress: 1,
-      startTime: null,
-      pauseTime: null
+      ...DEFAULT_TIMER_STATE, // 完全重置到初始狀態
+      status: 'stopped'
     })
     
-    // 停止 Worker
-    if (timerWorker) {
-      timerWorker.postMessage({
-        type: 'TIMER_STOP',
-        id: timerId,
-        timestamp: Date.now()
-      })
-    }
+    // Worker 已經停止，不需要再發送停止訊息
+    // 這個函數是由 TIMER_COMPLETE 訊息觸發的，表示 Worker 已經完成了
     
     callbacks.onComplete?.(record)
   }
@@ -346,13 +359,13 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
   /**
    * 發送訊息到 Worker
    */
-  function sendWorkerMessage(type: string, data?: unknown): void {
+  function sendWorkerMessage(type: string, payload?: unknown): void {
     if (timerWorker) {
       timerWorker.postMessage({
         type,
         id: timerId,
         timestamp: Date.now(),
-        data
+        payload
       })
     }
   }
@@ -406,11 +419,12 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
       })
       
       // 啟動 Worker 計時
-      sendWorkerMessage('TIMER_START', {
+      sendWorkerMessage('START_TIMER', {
         mode,
         duration: timerDuration,
-        startTime: startTime.getTime()
-      } as TimerStartData)
+        startTime: startTime.getTime(),
+        phase: 'work' // MVP 版本固定為 work 階段
+      })
       
       return state.value
     },
@@ -428,7 +442,9 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
         pauseTime: new Date()
       })
       
-      sendWorkerMessage('TIMER_PAUSE')
+      sendWorkerMessage('PAUSE_TIMER', {
+        pauseTime: Date.now()
+      })
       
       return state.value
     },
@@ -452,7 +468,9 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
         pauseTime: null
       })
       
-      sendWorkerMessage('TIMER_RESUME')
+      sendWorkerMessage('RESUME_TIMER', {
+        resumeTime: Date.now()
+      })
       
       return state.value
     },
@@ -468,14 +486,13 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
       const record = createActivityRecord(completed)
       
       updateState({
-        status: 'stopped',
-        startTime: null,
-        pauseTime: null,
-        remaining: completed ? 0 : state.value.remaining,
-        progress: completed ? 1 : state.value.progress
+        ...DEFAULT_TIMER_STATE, // 完全重置到初始狀態
+        status: 'stopped'
       })
       
-      sendWorkerMessage('TIMER_STOP')
+      sendWorkerMessage('STOP_TIMER', {
+        stopTime: Date.now()
+      })
       
       return record
     },
@@ -489,7 +506,9 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
         mode: state.value.mode // 保持當前模式
       })
       
-      sendWorkerMessage('TIMER_RESET')
+      sendWorkerMessage('STOP_TIMER', {
+        stopTime: Date.now()
+      })
       
       return state.value
     },

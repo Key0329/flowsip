@@ -146,6 +146,8 @@ class TimerWorker {
     }
     
     // 更新狀態
+    const now = performance.now()
+    
     this.state = {
       ...this.state,
       isRunning: true,
@@ -155,12 +157,12 @@ class TimerWorker {
       duration: message.payload.duration,
       remaining: message.payload.duration,
       elapsed: 0,
-      startTimestamp: message.payload.startTime,
+      startTimestamp: now,  // 使用 Worker 內部的 performance.now()
       pauseTimestamp: null,
       resumeTimestamp: null,
       pauseDuration: 0,
       pauseCount: 0,
-      lastUpdateAt: performance.now()
+      lastUpdateAt: now
     }
     
     // 開始計時循環
@@ -197,7 +199,7 @@ class TimerWorker {
     this.state = {
       ...this.state,
       isPaused: true,
-      pauseTimestamp: message.payload.pauseTime,
+      pauseTimestamp: message.payload.pauseTime || performance.now(),
       pauseCount: this.state.pauseCount + 1,
       lastUpdateAt: performance.now()
     }
@@ -222,9 +224,11 @@ class TimerWorker {
       return
     }
     
+    const resumeTime = message.payload.resumeTime || performance.now()
+    
     // 計算暫停時長
     if (this.state.pauseTimestamp) {
-      const pauseDuration = message.payload.resumeTime - this.state.pauseTimestamp
+      const pauseDuration = resumeTime - this.state.pauseTimestamp
       this.state.pauseDuration += pauseDuration
     }
     
@@ -233,7 +237,7 @@ class TimerWorker {
       ...this.state,
       isPaused: false,
       pauseTimestamp: null,
-      resumeTimestamp: message.payload.resumeTime,
+      resumeTimestamp: resumeTime,
       lastUpdateAt: performance.now()
     }
     
@@ -259,7 +263,8 @@ class TimerWorker {
     this.stopTicking()
     
     // 計算最終統計
-    const actualDuration = message.payload.stopTime - (this.state.startTimestamp || 0) - this.state.pauseDuration
+    const stopTime = message.payload.stopTime || performance.now()
+    const actualDuration = stopTime - (this.state.startTimestamp || 0) - this.state.pauseDuration
     const completed = !message.payload.manual && this.state.remaining <= 0
     
     // 發送完成訊息
@@ -271,7 +276,7 @@ class TimerWorker {
         phase: this.state.phase,
         duration: this.state.duration,
         actualDuration,
-        completedAt: message.payload.stopTime,
+        completedAt: stopTime,
         nextPhase: this.calculateNextPhase()
       }
     } as TimerCompleteMessage)
@@ -394,9 +399,24 @@ class TimerWorker {
       elapsed = now - this.state.resumeTimestamp + this.state.elapsed
     }
     
-    // 計算剩餘時間
+    // 確保 elapsed 不會是負數
+    elapsed = Math.max(0, elapsed)
+    
+    // 計算剩餘時間 - 確保不會是負數
     const remaining = Math.max(0, this.state.duration - elapsed)
-    const progress = elapsed / this.state.duration
+    const progress = this.state.duration > 0 ? Math.min(1, elapsed / this.state.duration) : 0
+    
+    // 調試日誌
+    if (elapsed > 1000) { // 只在有明顯進展時記錄
+      this.log('debug', 'Tick計算', {
+        now,
+        startTime: realStartTime,
+        elapsed,
+        remaining,
+        progress,
+        duration: this.state.duration
+      })
+    }
     
     // 更新狀態
     this.state = {
@@ -473,7 +493,7 @@ class TimerWorker {
   /**
    * 校正時間狀態
    */
-  private correctTimeState(currentTime: number, timeDrift: number): void {
+  private correctTimeState(_currentTime: number, timeDrift: number): void {
     // 校正已過時間
     const correctedElapsed = Math.max(0, this.state.elapsed + timeDrift)
     const correctedRemaining = Math.max(0, this.state.duration - correctedElapsed)

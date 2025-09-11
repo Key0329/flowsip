@@ -14,10 +14,10 @@
     <!-- 主要內容區 -->
     <main class="main-content">
       <!-- 模式選擇區 -->
-      <section v-if="!timerState.isRunning && !timerState.isPaused" class="mode-section">
+      <section v-if="timerState.status === 'stopped'" class="mode-section">
         <TimerModeSwitch
           :current-mode="selectedMode"
-          :disabled="timerState.isRunning"
+          :disabled="timerState.status === 'running'"
           :show-title="true"
           :show-subtitle="true"
           :show-custom-duration="true"
@@ -264,7 +264,6 @@ const notificationStatus = computed(() => {
 
 // 計時器事件處理
 async function handleModeSelect(mode: TimerMode, duration: number) {
-  console.log('模式選擇 - 模式:', mode, '時間:', duration)
   selectedMode.value = mode
   customDuration.value = duration
 }
@@ -274,8 +273,20 @@ function handleDurationChange(duration: number) {
 }
 
 async function handleStart() {
-  console.log('開始計時 - 模式:', selectedMode.value, '時間:', customDuration.value)
+  console.log('開始計時 - 模式:', selectedMode.value, '時間:', customDuration.value, '狀態:', timerState.value.status)
   
+  // 如果計時器已暫停，則恢復計時
+  if (timerState.value.status === 'paused') {
+    try {
+      await timer.resume()
+      return
+    } catch (error) {
+      showError('恢復計時器失敗：' + (error as Error).message)
+      return
+    }
+  }
+  
+  // 否則開始新的計時
   if (!selectedMode.value || customDuration.value === 0) {
     // 顯示錯誤提示
     showError(`請先選擇計時模式和時間。當前模式: ${selectedMode.value}, 時間: ${customDuration.value}`)
@@ -366,6 +377,11 @@ function showError(message: string) {
   alert('錯誤：' + message)
 }
 
+function showSuccess(message: string) {
+  // MVP 版本使用簡單的 alert
+  alert('✅ ' + message)
+}
+
 function showInfo(message: string) {
   // MVP 版本使用簡單的 alert
   alert('資訊：' + message)
@@ -402,6 +418,20 @@ onMounted(async () => {
     soundEnabled.value = true
     visualAlertsEnabled.value = true
   }
+  
+  // 設定計時器完成回調
+  timer.setCallbacks({
+    onComplete: (record) => {
+      console.log('計時完成！', record)
+      
+      // 發送通知
+      const mode = record.mode === 'water' ? '喝水提醒' : '番茄鐘'
+      notifications.sendTimerCompleteNotification(mode, `${mode}時間到了！`, record.mode)
+      
+      // 顯示完成提醒
+      showSuccess(`${mode}完成！時間到了。`)
+    }
+  })
 })
 
 onUnmounted(() => {
