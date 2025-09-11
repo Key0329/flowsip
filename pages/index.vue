@@ -21,7 +21,7 @@
           :show-title="true"
           :show-subtitle="true"
           :show-custom-duration="true"
-          @mode-select="handleModeSelect"
+          @mode-change="handleModeSelect"
           @duration-change="handleDurationChange"
         />
       </section>
@@ -34,7 +34,7 @@
           :status="timerState.status"
           :duration="timerState.duration"
           :remaining="timerState.remaining"
-          :elapsed="timerState.elapsed"
+          :elapsed="timerState.duration - timerState.remaining"
           :progress="timerProgress"
           :pause-count="timerState.pauseCount"
           :show-details="showTimerDetails"
@@ -259,20 +259,14 @@ const showStatusInfo = computed(() => {
 const showAccuracyInfo = ref(true)
 
 const notificationStatus = computed(() => {
-  return notifications.permission.value
+  return notifications.state.permission
 })
 
 // 計時器事件處理
-async function handleModeSelect(mode: TimerMode) {
+async function handleModeSelect(mode: TimerMode, duration: number) {
+  console.log('模式選擇 - 模式:', mode, '時間:', duration)
   selectedMode.value = mode
-  
-  // 設定預設時間
-  const defaultDurations = {
-    water: 30 * 60 * 1000,    // 30分鐘
-    pomodoro: 25 * 60 * 1000  // 25分鐘
-  }
-  
-  customDuration.value = defaultDurations[mode]
+  customDuration.value = duration
 }
 
 function handleDurationChange(duration: number) {
@@ -280,9 +274,11 @@ function handleDurationChange(duration: number) {
 }
 
 async function handleStart() {
+  console.log('開始計時 - 模式:', selectedMode.value, '時間:', customDuration.value)
+  
   if (!selectedMode.value || customDuration.value === 0) {
     // 顯示錯誤提示
-    showError('請先選擇計時模式和時間')
+    showError(`請先選擇計時模式和時間。當前模式: ${selectedMode.value}, 時間: ${customDuration.value}`)
     return
   }
 
@@ -397,11 +393,14 @@ onMounted(async () => {
   // 載入使用者設定
   try {
     const settings = await storage.loadSettings()
-    soundEnabled.value = settings.notifications.sound.enabled
-    visualAlertsEnabled.value = settings.notifications.visual.enabled
-    // darkMode.value = settings.theme.mode === 'dark'
+    soundEnabled.value = settings.soundEnabled || true
+    visualAlertsEnabled.value = settings.fallbackAlerts?.visualAlertsEnabled || true
+    // darkMode.value = settings.theme === 'dark'
   } catch (error) {
     console.warn('載入設定失敗：', error)
+    // 使用預設值
+    soundEnabled.value = true
+    visualAlertsEnabled.value = true
   }
 })
 

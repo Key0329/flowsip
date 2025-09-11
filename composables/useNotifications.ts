@@ -504,6 +504,7 @@ export function useNotifications(): UseNotificationsReturn {
     state,
     needsFallback,
     isAvailable,
+    initialize,
     checkPermission,
     requestPermission,
     sendNotification,

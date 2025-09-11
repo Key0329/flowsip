@@ -4,7 +4,7 @@
     <div class="timer-mode">
       <div class="mode-icon">
         <Icon v-if="mode === 'water'" name="mdi:water" />
-        <Icon v-else-if="mode === 'pomodoro'" name="mdi:tomato" />
+        <Icon v-else-if="mode === 'pomodoro'" name="mdi:timer" />
         <Icon v-else name="mdi:timer-outline" />
       </div>
       <span class="mode-text">{{ modeText }}</span>

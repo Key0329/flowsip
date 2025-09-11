@@ -207,8 +207,8 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
    */
   function initializeWorker(): void {
     try {
-      // 創建 Timer Web Worker（實際實作在 T014）
-      timerWorker = new Worker('/workers/timer-worker.js') as TimerWorker
+      // 創建 Timer Web Worker（使用 Vite 動態導入）
+      timerWorker = new Worker(new URL('/workers/timer-worker.ts', import.meta.url), { type: 'module' }) as TimerWorker
       
       // 監聽 Worker 訊息
       timerWorker.onmessage = (event: MessageEvent<WorkerMessage>) => {
@@ -218,11 +218,12 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
       // 監聽 Worker 錯誤
       timerWorker.onerror = (error) => {
         console.error('Timer Worker 錯誤:', error)
-        callbacks.onError?.(new TimerError(
-          'Timer Worker 發生錯誤',
-          'TIMER_INITIALIZATION_FAILED',
-          error
-        ))
+        const timerError = {
+          message: 'Timer Worker 發生錯誤',
+          code: 'TIMER_INITIALIZATION_FAILED' as const,
+          details: error
+        } as TimerError
+        callbacks.onError?.(timerError)
       }
       
     } catch (error) {
@@ -285,6 +286,10 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
    */
   function handleWorkerMessage(message: WorkerMessage): void {
     switch (message.type) {
+      case 'WORKER_READY':
+        console.log('Timer Worker 已就緒')
+        break
+        
       case 'TIMER_TICK':
         const tickData = message.data as TimerTickData
         updateState({
@@ -300,10 +305,11 @@ export function useTimer(initialCallbacks: Partial<TimerCallbacks> = {}): UseTim
         
       case 'TIMER_ERROR':
         const errorMessage = message.data as string
-        callbacks.onError?.(new TimerError(
-          errorMessage,
-          'TIMER_INITIALIZATION_FAILED'
-        ))
+        const timerError = {
+          message: errorMessage,
+          code: 'TIMER_INITIALIZATION_FAILED' as const
+        } as TimerError
+        callbacks.onError?.(timerError)
         break
         
       default:

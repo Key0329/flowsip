@@ -243,7 +243,7 @@ const modeDefinitions: Record<TimerMode, ModeOption> = {
     value: 'pomodoro',
     name: '番茄鐘',
     description: '專注工作與休息的時間管理',
-    icon: 'mdi:tomato',
+    icon: 'mdi:timer',
     defaultDuration: 25 * 60 * 1000 // 25分鐘
   }
 }
