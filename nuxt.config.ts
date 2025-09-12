@@ -202,6 +202,11 @@ export default defineNuxtConfig({
     }
   },
 
+  // CSS 配置
+  css: [
+    '~/assets/styles/global.css'
+  ],
+
   // TypeScript 配置（MVP 階段簡化）
   typescript: {
     strict: false,

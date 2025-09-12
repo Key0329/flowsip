@@ -1,0 +1,382 @@
+/**
+ * FlowSip 間距系統 - Spacing System
+ * 
+ * 統一的間距變數系統，確保一致的視覺節奏
+ * 基於 8px 基礎網格系統，支援響應式設計
+ */
+
+/* =============================================================================
+   基礎間距系統 (Base Spacing Scale)
+============================================================================= */
+
+:root {
+  /* 基礎間距單位 - 8px 網格系統 */
+  --spacing-unit: 0.5rem; /* 8px */
+  
+  /* 間距階層 - 基於 8px 倍數 */
+  --spacing-0: 0;                    /* 0px */
+  --spacing-1: calc(var(--spacing-unit) * 0.5);  /* 4px */
+  --spacing-2: var(--spacing-unit);              /* 8px */
+  --spacing-3: calc(var(--spacing-unit) * 1.5);  /* 12px */
+  --spacing-4: calc(var(--spacing-unit) * 2);    /* 16px */
+  --spacing-5: calc(var(--spacing-unit) * 2.5);  /* 20px */
+  --spacing-6: calc(var(--spacing-unit) * 3);    /* 24px */
+  --spacing-8: calc(var(--spacing-unit) * 4);    /* 32px */
+  --spacing-10: calc(var(--spacing-unit) * 5);   /* 40px */
+  --spacing-12: calc(var(--spacing-unit) * 6);   /* 48px */
+  --spacing-16: calc(var(--spacing-unit) * 8);   /* 64px */
+  --spacing-20: calc(var(--spacing-unit) * 10);  /* 80px */
+  --spacing-24: calc(var(--spacing-unit) * 12);  /* 96px */
+  --spacing-32: calc(var(--spacing-unit) * 16);  /* 128px */
+  --spacing-40: calc(var(--spacing-unit) * 20);  /* 160px */
+  --spacing-48: calc(var(--spacing-unit) * 24);  /* 192px */
+  --spacing-56: calc(var(--spacing-unit) * 28);  /* 224px */
+  --spacing-64: calc(var(--spacing-unit) * 32);  /* 256px */
+}
+
+/* =============================================================================
+   語意化間距變數 (Semantic Spacing)
+============================================================================= */
+
+:root {
+  /* 容器間距 */
+  --spacing-container-sm: var(--spacing-4);     /* 16px */
+  --spacing-container-md: var(--spacing-6);     /* 24px */
+  --spacing-container-lg: var(--spacing-8);     /* 32px */
+  --spacing-container-xl: var(--spacing-12);    /* 48px */
+  
+  /* 元件內部間距 */
+  --spacing-component-xs: var(--spacing-1);     /* 4px */
+  --spacing-component-sm: var(--spacing-2);     /* 8px */
+  --spacing-component-md: var(--spacing-4);     /* 16px */
+  --spacing-component-lg: var(--spacing-6);     /* 24px */
+  --spacing-component-xl: var(--spacing-8);     /* 32px */
+  
+  /* 頁面佈局間距 */
+  --spacing-layout-xs: var(--spacing-8);        /* 32px */
+  --spacing-layout-sm: var(--spacing-12);       /* 48px */
+  --spacing-layout-md: var(--spacing-16);       /* 64px */
+  --spacing-layout-lg: var(--spacing-24);       /* 96px */
+  --spacing-layout-xl: var(--spacing-32);       /* 128px */
+  
+  /* 區塊間距 */
+  --spacing-section-xs: var(--spacing-6);       /* 24px */
+  --spacing-section-sm: var(--spacing-8);       /* 32px */
+  --spacing-section-md: var(--spacing-12);      /* 48px */
+  --spacing-section-lg: var(--spacing-16);      /* 64px */
+  --spacing-section-xl: var(--spacing-20);      /* 80px */
+  
+  /* 卡片與面板間距 */
+  --spacing-card-padding-sm: var(--spacing-4);  /* 16px */
+  --spacing-card-padding-md: var(--spacing-6);  /* 24px */
+  --spacing-card-padding-lg: var(--spacing-8);  /* 32px */
+  --spacing-card-gap-sm: var(--spacing-3);      /* 12px */
+  --spacing-card-gap-md: var(--spacing-4);      /* 16px */
+  --spacing-card-gap-lg: var(--spacing-6);      /* 24px */
+  
+  /* 按鈕間距 */
+  --spacing-button-padding-x-sm: var(--spacing-3);  /* 12px */
+  --spacing-button-padding-y-sm: var(--spacing-2);  /* 8px */
+  --spacing-button-padding-x-md: var(--spacing-4);  /* 16px */
+  --spacing-button-padding-y-md: var(--spacing-3);  /* 12px */
+  --spacing-button-padding-x-lg: var(--spacing-6);  /* 24px */
+  --spacing-button-padding-y-lg: var(--spacing-4);  /* 16px */
+  --spacing-button-gap: var(--spacing-3);           /* 12px */
+  
+  /* 表單元件間距 */
+  --spacing-form-element-gap: var(--spacing-4);     /* 16px */
+  --spacing-form-group-gap: var(--spacing-6);       /* 24px */
+  --spacing-form-section-gap: var(--spacing-8);     /* 32px */
+  --spacing-input-padding-x: var(--spacing-4);      /* 16px */
+  --spacing-input-padding-y: var(--spacing-3);      /* 12px */
+  
+  /* 導航間距 */
+  --spacing-nav-item-padding-x: var(--spacing-4);   /* 16px */
+  --spacing-nav-item-padding-y: var(--spacing-3);   /* 12px */
+  --spacing-nav-gap: var(--spacing-2);              /* 8px */
+  
+  /* 計時器專用間距 */
+  --spacing-timer-padding: var(--spacing-8);        /* 32px */
+  --spacing-timer-gap: var(--spacing-6);            /* 24px */
+  --spacing-timer-controls-gap: var(--spacing-4);   /* 16px */
+}
+
+/* =============================================================================
+   邊界半徑系統 (Border Radius)
+============================================================================= */
+
+:root {
+  /* 基礎圓角系統 */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;    /* 2px */
+  --radius-base: 0.25rem;   /* 4px */
+  --radius-md: 0.375rem;    /* 6px */
+  --radius-lg: 0.5rem;      /* 8px */
+  --radius-xl: 0.75rem;     /* 12px */
+  --radius-2xl: 1rem;       /* 16px */
+  --radius-3xl: 1.5rem;     /* 24px */
+  --radius-full: 9999px;    /* 完全圓形 */
+  
+  /* 語意化圓角 */
+  --radius-button: var(--radius-md);      /* 按鈕圓角 */
+  --radius-card: var(--radius-lg);        /* 卡片圓角 */
+  --radius-input: var(--radius-base);     /* 輸入框圓角 */
+  --radius-badge: var(--radius-full);     /* 徽章圓角 */
+  --radius-timer: var(--radius-2xl);      /* 計時器圓角 */
+}
+
+/* =============================================================================
+   陰影系統 (Box Shadow)
+============================================================================= */
+
+:root {
+  /* 陰影階層 */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-base: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-2xl: 0 50px 100px -20px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  
+  /* 語意化陰影 */
+  --shadow-card: var(--shadow-sm);        /* 卡片陰影 */
+  --shadow-button: var(--shadow-xs);      /* 按鈕陰影 */
+  --shadow-button-hover: var(--shadow-sm); /* 按鈕懸停陰影 */
+  --shadow-modal: var(--shadow-xl);       /* 模態框陰影 */
+  --shadow-timer: var(--shadow-lg);       /* 計時器陰影 */
+  --shadow-focus: 0 0 0 3px rgb(var(--color-primary) / 0.1); /* 焦點陰影 */
+}
+
+/* =============================================================================
+   工具類別 - 邊距 (Margin Utilities)
+============================================================================= */
+
+/* 所有方向邊距 */
+.m-0 { margin: var(--spacing-0); }
+.m-1 { margin: var(--spacing-1); }
+.m-2 { margin: var(--spacing-2); }
+.m-3 { margin: var(--spacing-3); }
+.m-4 { margin: var(--spacing-4); }
+.m-5 { margin: var(--spacing-5); }
+.m-6 { margin: var(--spacing-6); }
+.m-8 { margin: var(--spacing-8); }
+.m-10 { margin: var(--spacing-10); }
+.m-12 { margin: var(--spacing-12); }
+.m-16 { margin: var(--spacing-16); }
+.m-20 { margin: var(--spacing-20); }
+.m-24 { margin: var(--spacing-24); }
+.m-32 { margin: var(--spacing-32); }
+.m-auto { margin: auto; }
+
+/* 水平邊距 */
+.mx-0 { margin-left: var(--spacing-0); margin-right: var(--spacing-0); }
+.mx-1 { margin-left: var(--spacing-1); margin-right: var(--spacing-1); }
+.mx-2 { margin-left: var(--spacing-2); margin-right: var(--spacing-2); }
+.mx-3 { margin-left: var(--spacing-3); margin-right: var(--spacing-3); }
+.mx-4 { margin-left: var(--spacing-4); margin-right: var(--spacing-4); }
+.mx-5 { margin-left: var(--spacing-5); margin-right: var(--spacing-5); }
+.mx-6 { margin-left: var(--spacing-6); margin-right: var(--spacing-6); }
+.mx-8 { margin-left: var(--spacing-8); margin-right: var(--spacing-8); }
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* 垂直邊距 */
+.my-0 { margin-top: var(--spacing-0); margin-bottom: var(--spacing-0); }
+.my-1 { margin-top: var(--spacing-1); margin-bottom: var(--spacing-1); }
+.my-2 { margin-top: var(--spacing-2); margin-bottom: var(--spacing-2); }
+.my-3 { margin-top: var(--spacing-3); margin-bottom: var(--spacing-3); }
+.my-4 { margin-top: var(--spacing-4); margin-bottom: var(--spacing-4); }
+.my-5 { margin-top: var(--spacing-5); margin-bottom: var(--spacing-5); }
+.my-6 { margin-top: var(--spacing-6); margin-bottom: var(--spacing-6); }
+.my-8 { margin-top: var(--spacing-8); margin-bottom: var(--spacing-8); }
+
+/* 單方向邊距 */
+.mt-0 { margin-top: var(--spacing-0); }
+.mt-1 { margin-top: var(--spacing-1); }
+.mt-2 { margin-top: var(--spacing-2); }
+.mt-3 { margin-top: var(--spacing-3); }
+.mt-4 { margin-top: var(--spacing-4); }
+.mt-6 { margin-top: var(--spacing-6); }
+.mt-8 { margin-top: var(--spacing-8); }
+
+.mb-0 { margin-bottom: var(--spacing-0); }
+.mb-1 { margin-bottom: var(--spacing-1); }
+.mb-2 { margin-bottom: var(--spacing-2); }
+.mb-3 { margin-bottom: var(--spacing-3); }
+.mb-4 { margin-bottom: var(--spacing-4); }
+.mb-6 { margin-bottom: var(--spacing-6); }
+.mb-8 { margin-bottom: var(--spacing-8); }
+
+.ml-0 { margin-left: var(--spacing-0); }
+.ml-1 { margin-left: var(--spacing-1); }
+.ml-2 { margin-left: var(--spacing-2); }
+.ml-3 { margin-left: var(--spacing-3); }
+.ml-4 { margin-left: var(--spacing-4); }
+.ml-auto { margin-left: auto; }
+
+.mr-0 { margin-right: var(--spacing-0); }
+.mr-1 { margin-right: var(--spacing-1); }
+.mr-2 { margin-right: var(--spacing-2); }
+.mr-3 { margin-right: var(--spacing-3); }
+.mr-4 { margin-right: var(--spacing-4); }
+.mr-auto { margin-right: auto; }
+
+/* =============================================================================
+   工具類別 - 內距 (Padding Utilities)
+============================================================================= */
+
+/* 所有方向內距 */
+.p-0 { padding: var(--spacing-0); }
+.p-1 { padding: var(--spacing-1); }
+.p-2 { padding: var(--spacing-2); }
+.p-3 { padding: var(--spacing-3); }
+.p-4 { padding: var(--spacing-4); }
+.p-5 { padding: var(--spacing-5); }
+.p-6 { padding: var(--spacing-6); }
+.p-8 { padding: var(--spacing-8); }
+.p-10 { padding: var(--spacing-10); }
+.p-12 { padding: var(--spacing-12); }
+.p-16 { padding: var(--spacing-16); }
+.p-20 { padding: var(--spacing-20); }
+.p-24 { padding: var(--spacing-24); }
+
+/* 水平內距 */
+.px-0 { padding-left: var(--spacing-0); padding-right: var(--spacing-0); }
+.px-1 { padding-left: var(--spacing-1); padding-right: var(--spacing-1); }
+.px-2 { padding-left: var(--spacing-2); padding-right: var(--spacing-2); }
+.px-3 { padding-left: var(--spacing-3); padding-right: var(--spacing-3); }
+.px-4 { padding-left: var(--spacing-4); padding-right: var(--spacing-4); }
+.px-5 { padding-left: var(--spacing-5); padding-right: var(--spacing-5); }
+.px-6 { padding-left: var(--spacing-6); padding-right: var(--spacing-6); }
+.px-8 { padding-left: var(--spacing-8); padding-right: var(--spacing-8); }
+
+/* 垂直內距 */
+.py-0 { padding-top: var(--spacing-0); padding-bottom: var(--spacing-0); }
+.py-1 { padding-top: var(--spacing-1); padding-bottom: var(--spacing-1); }
+.py-2 { padding-top: var(--spacing-2); padding-bottom: var(--spacing-2); }
+.py-3 { padding-top: var(--spacing-3); padding-bottom: var(--spacing-3); }
+.py-4 { padding-top: var(--spacing-4); padding-bottom: var(--spacing-4); }
+.py-5 { padding-top: var(--spacing-5); padding-bottom: var(--spacing-5); }
+.py-6 { padding-top: var(--spacing-6); padding-bottom: var(--spacing-6); }
+.py-8 { padding-top: var(--spacing-8); padding-bottom: var(--spacing-8); }
+
+/* 單方向內距 */
+.pt-0 { padding-top: var(--spacing-0); }
+.pt-1 { padding-top: var(--spacing-1); }
+.pt-2 { padding-top: var(--spacing-2); }
+.pt-3 { padding-top: var(--spacing-3); }
+.pt-4 { padding-top: var(--spacing-4); }
+.pt-6 { padding-top: var(--spacing-6); }
+.pt-8 { padding-top: var(--spacing-8); }
+
+.pb-0 { padding-bottom: var(--spacing-0); }
+.pb-1 { padding-bottom: var(--spacing-1); }
+.pb-2 { padding-bottom: var(--spacing-2); }
+.pb-3 { padding-bottom: var(--spacing-3); }
+.pb-4 { padding-bottom: var(--spacing-4); }
+.pb-6 { padding-bottom: var(--spacing-6); }
+.pb-8 { padding-bottom: var(--spacing-8); }
+
+.pl-0 { padding-left: var(--spacing-0); }
+.pl-1 { padding-left: var(--spacing-1); }
+.pl-2 { padding-left: var(--spacing-2); }
+.pl-3 { padding-left: var(--spacing-3); }
+.pl-4 { padding-left: var(--spacing-4); }
+.pl-6 { padding-left: var(--spacing-6); }
+
+.pr-0 { padding-right: var(--spacing-0); }
+.pr-1 { padding-right: var(--spacing-1); }
+.pr-2 { padding-right: var(--spacing-2); }
+.pr-3 { padding-right: var(--spacing-3); }
+.pr-4 { padding-right: var(--spacing-4); }
+.pr-6 { padding-right: var(--spacing-6); }
+
+/* =============================================================================
+   間隙系統 (Gap Utilities) - for Flexbox & Grid
+============================================================================= */
+
+.gap-0 { gap: var(--spacing-0); }
+.gap-1 { gap: var(--spacing-1); }
+.gap-2 { gap: var(--spacing-2); }
+.gap-3 { gap: var(--spacing-3); }
+.gap-4 { gap: var(--spacing-4); }
+.gap-5 { gap: var(--spacing-5); }
+.gap-6 { gap: var(--spacing-6); }
+.gap-8 { gap: var(--spacing-8); }
+
+.gap-x-0 { column-gap: var(--spacing-0); }
+.gap-x-1 { column-gap: var(--spacing-1); }
+.gap-x-2 { column-gap: var(--spacing-2); }
+.gap-x-3 { column-gap: var(--spacing-3); }
+.gap-x-4 { column-gap: var(--spacing-4); }
+.gap-x-6 { column-gap: var(--spacing-6); }
+
+.gap-y-0 { row-gap: var(--spacing-0); }
+.gap-y-1 { row-gap: var(--spacing-1); }
+.gap-y-2 { row-gap: var(--spacing-2); }
+.gap-y-3 { row-gap: var(--spacing-3); }
+.gap-y-4 { row-gap: var(--spacing-4); }
+.gap-y-6 { row-gap: var(--spacing-6); }
+
+/* =============================================================================
+   響應式間距 (Responsive Spacing)
+============================================================================= */
+
+/* 平板螢幕 */
+@media (min-width: 768px) {
+  :root {
+    /* 增加容器間距 */
+    --spacing-container-sm: var(--spacing-6);   /* 24px */
+    --spacing-container-md: var(--spacing-8);   /* 32px */
+    --spacing-container-lg: var(--spacing-12);  /* 48px */
+    --spacing-container-xl: var(--spacing-16);  /* 64px */
+    
+    /* 增加版面間距 */
+    --spacing-layout-sm: var(--spacing-16);     /* 64px */
+    --spacing-layout-md: var(--spacing-20);     /* 80px */
+    --spacing-layout-lg: var(--spacing-32);     /* 128px */
+    --spacing-layout-xl: var(--spacing-40);     /* 160px */
+  }
+}
+
+/* 桌面螢幕 */
+@media (min-width: 1024px) {
+  :root {
+    /* 桌面螢幕的更寬鬆間距 */
+    --spacing-container-lg: var(--spacing-16);  /* 64px */
+    --spacing-container-xl: var(--spacing-20);  /* 80px */
+    
+    --spacing-layout-md: var(--spacing-24);     /* 96px */
+    --spacing-layout-lg: var(--spacing-40);     /* 160px */
+    --spacing-layout-xl: var(--spacing-48);     /* 192px */
+    
+    /* 計時器間距調整 */
+    --spacing-timer-padding: var(--spacing-12); /* 48px */
+    --spacing-timer-gap: var(--spacing-8);      /* 32px */
+  }
+}
+
+/* =============================================================================
+   特殊用途間距類別
+============================================================================= */
+
+/* 容器間距 */
+.container-padding-sm { padding: var(--spacing-container-sm); }
+.container-padding-md { padding: var(--spacing-container-md); }
+.container-padding-lg { padding: var(--spacing-container-lg); }
+.container-padding-xl { padding: var(--spacing-container-xl); }
+
+/* 區塊間距 */
+.section-spacing-sm { margin-bottom: var(--spacing-section-sm); }
+.section-spacing-md { margin-bottom: var(--spacing-section-md); }
+.section-spacing-lg { margin-bottom: var(--spacing-section-lg); }
+.section-spacing-xl { margin-bottom: var(--spacing-section-xl); }
+
+/* 卡片間距 */
+.card-padding-sm { padding: var(--spacing-card-padding-sm); }
+.card-padding-md { padding: var(--spacing-card-padding-md); }
+.card-padding-lg { padding: var(--spacing-card-padding-lg); }
+.card-gap-sm { gap: var(--spacing-card-gap-sm); }
+.card-gap-md { gap: var(--spacing-card-gap-md); }
+.card-gap-lg { gap: var(--spacing-card-gap-lg); }

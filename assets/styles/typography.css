@@ -1,0 +1,429 @@
+/**
+ * FlowSip 排版系統 - Typography System
+ * 
+ * 統一的字型大小、行高、字重系統
+ * 支援響應式設計和無障礙需求
+ */
+
+/* =============================================================================
+   字型家族定義
+============================================================================= */
+
+:root {
+  /* 主要字型堆疊 - 優先系統字型，確保載入速度 */
+  --font-family-primary: 
+    -apple-system, 
+    BlinkMacSystemFont, 
+    "Segoe UI", 
+    "Noto Sans TC", 
+    "PingFang TC", 
+    "Microsoft JhengHei", 
+    Roboto, 
+    "Helvetica Neue", 
+    Arial, 
+    sans-serif;
+  
+  /* 等寬字型 - 用於計時器數字顯示 */
+  --font-family-mono: 
+    "SF Mono", 
+    "Monaco", 
+    "Cascadia Code", 
+    "Roboto Mono", 
+    "Courier New", 
+    monospace;
+  
+  /* 裝飾字型 - 用於品牌標題 */
+  --font-family-display: 
+    "SF Pro Display", 
+    -apple-system-headline, 
+    var(--font-family-primary);
+}
+
+/* =============================================================================
+   字體大小階層系統 (Type Scale)
+============================================================================= */
+
+:root {
+  /* 基礎字體大小 */
+  --text-base-size: 1rem; /* 16px */
+  
+  /* Type Scale - 1.25 比例 (Major Third) */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+  --text-5xl: 3rem;       /* 48px */
+  --text-6xl: 3.75rem;    /* 60px */
+  --text-7xl: 4.5rem;     /* 72px */
+  
+  /* 計時器專用大字型 */
+  --text-timer-sm: 2rem;    /* 32px - 小螢幕 */
+  --text-timer-md: 3rem;    /* 48px - 中等螢幕 */
+  --text-timer-lg: 4rem;    /* 64px - 大螢幕 */
+  --text-timer-xl: 5rem;    /* 80px - 特大螢幕 */
+}
+
+/* =============================================================================
+   行高系統 (Line Height)
+============================================================================= */
+
+:root {
+  /* 標準行高 */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  
+  /* 特殊用途行高 */
+  --leading-heading: 1.2;    /* 標題專用 */
+  --leading-body: 1.6;       /* 內文專用 */
+  --leading-caption: 1.4;    /* 說明文字專用 */
+}
+
+/* =============================================================================
+   字重系統 (Font Weight)
+============================================================================= */
+
+:root {
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}
+
+/* =============================================================================
+   排版元件類別 (Typography Components)
+============================================================================= */
+
+/* 標題樣式 */
+.text-display-1 {
+  font-family: var(--font-family-display);
+  font-size: var(--text-6xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.025em;
+}
+
+.text-display-2 {
+  font-family: var(--font-family-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.025em;
+}
+
+.text-heading-1 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.02em;
+}
+
+.text-heading-2 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.015em;
+}
+
+.text-heading-3 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.01em;
+}
+
+.text-heading-4 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-heading);
+}
+
+.text-heading-5 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-heading);
+}
+
+.text-heading-6 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-heading);
+}
+
+/* 內文樣式 */
+.text-body-1 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-body);
+}
+
+.text-body-2 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-body);
+}
+
+.text-body-large {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-body);
+}
+
+/* 說明與輔助文字 */
+.text-caption {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-caption);
+  color: rgb(var(--color-text-secondary));
+}
+
+.text-overline {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgb(var(--color-text-secondary));
+}
+
+.text-subtitle-1 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--leading-normal);
+  color: rgb(var(--color-text-secondary));
+}
+
+.text-subtitle-2 {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-normal);
+  color: rgb(var(--color-text-secondary));
+}
+
+/* 計時器數字專用樣式 */
+.text-timer {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-none);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-timer-sm {
+  font-size: var(--text-timer-sm);
+}
+
+.text-timer-md {
+  font-size: var(--text-timer-md);
+}
+
+.text-timer-lg {
+  font-size: var(--text-timer-lg);
+}
+
+.text-timer-xl {
+  font-size: var(--text-timer-xl);
+}
+
+/* 按鈕文字樣式 */
+.text-button {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-none);
+  letter-spacing: 0.025em;
+}
+
+.text-button-lg {
+  font-family: var(--font-family-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-none);
+  letter-spacing: 0.025em;
+}
+
+/* =============================================================================
+   響應式排版 (Responsive Typography)
+============================================================================= */
+
+/* 平板螢幕 */
+@media (min-width: 768px) {
+  :root {
+    --text-timer-sm: 2.5rem;   /* 40px */
+    --text-timer-md: 3.5rem;   /* 56px */
+    --text-timer-lg: 4.5rem;   /* 72px */
+    --text-timer-xl: 6rem;     /* 96px */
+  }
+}
+
+/* 桌面螢幕 */
+@media (min-width: 1024px) {
+  :root {
+    --text-timer-sm: 3rem;     /* 48px */
+    --text-timer-md: 4rem;     /* 64px */
+    --text-timer-lg: 5rem;     /* 80px */
+    --text-timer-xl: 7rem;     /* 112px */
+  }
+}
+
+/* 大桌面螢幕 */
+@media (min-width: 1440px) {
+  :root {
+    --text-timer-sm: 3.5rem;   /* 56px */
+    --text-timer-md: 4.5rem;   /* 72px */
+    --text-timer-lg: 6rem;     /* 96px */
+    --text-timer-xl: 8rem;     /* 128px */
+  }
+}
+
+/* =============================================================================
+   無障礙功能 (Accessibility Features)
+============================================================================= */
+
+/* 使用者偏好大文字時的調整 */
+@media (prefers-reduced-motion: no-preference) {
+  /* 允許文字縮放動畫 */
+  .text-timer {
+    transition: font-size 0.3s ease-out;
+  }
+}
+
+/* 高對比模式支援 */
+@media (prefers-contrast: high) {
+  :root {
+    --font-weight-normal: 500;
+    --font-weight-medium: 600;
+    --font-weight-semibold: 700;
+  }
+}
+
+/* 系統字體大小設定支援 */
+@media (prefers-reduced-data: reduce) {
+  :root {
+    /* 使用系統字型，減少字型檔案載入 */
+    --font-family-primary: system-ui, sans-serif;
+    --font-family-mono: ui-monospace, monospace;
+    --font-family-display: system-ui, sans-serif;
+  }
+}
+
+/* =============================================================================
+   工具類別 (Utility Classes)
+============================================================================= */
+
+/* 文字對齊 */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
+/* 文字裝飾 */
+.text-underline { text-decoration: underline; }
+.text-no-underline { text-decoration: none; }
+.text-line-through { text-decoration: line-through; }
+
+/* 文字轉換 */
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+.text-normal-case { text-transform: none; }
+
+/* 文字溢出處理 */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 行高工具類別 */
+.leading-none { line-height: var(--leading-none); }
+.leading-tight { line-height: var(--leading-tight); }
+.leading-snug { line-height: var(--leading-snug); }
+.leading-normal { line-height: var(--leading-normal); }
+.leading-relaxed { line-height: var(--leading-relaxed); }
+.leading-loose { line-height: var(--leading-loose); }
+
+/* 字重工具類別 */
+.font-thin { font-weight: var(--font-weight-thin); }
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+.font-extrabold { font-weight: var(--font-weight-extrabold); }
+.font-black { font-weight: var(--font-weight-black); }
+
+/* 字型家族工具類別 */
+.font-primary { font-family: var(--font-family-primary); }
+.font-mono { font-family: var(--font-family-mono); }
+.font-display { font-family: var(--font-family-display); }
+
+/* =============================================================================
+   語言特定優化
+============================================================================= */
+
+/* 正體中文優化 */
+:lang(zh-TW) {
+  /* 改善中文字型渲染 */
+  text-rendering: optimizeLegibility;
+  -webkit-font-feature-settings: "kern" 1;
+  font-feature-settings: "kern" 1;
+  
+  /* 中文標點符號處理 */
+  hanging-punctuation: first last;
+}
+
+/* 中英混排優化 */
+.text-mixed-lang {
+  /* 中英文間距自動調整 */
+  font-variant-east-asian: proportional-width;
+  text-spacing: ideograph-alpha ideograph-numeric;
+}
+
+/* =============================================================================
+   打印樣式優化
+============================================================================= */
+
+@media print {
+  :root {
+    /* 打印時使用較小字型節省空間 */
+    --text-base-size: 12pt;
+    --leading-body: 1.4;
+  }
+  
+  .text-timer {
+    /* 打印時使用普通字型 */
+    font-family: var(--font-family-primary);
+  }
+}

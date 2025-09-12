@@ -82,35 +82,158 @@ export type TimerErrorCode =
 /**
  * 主題模式
  */
-export type ThemeMode = 'light' | 'dark' | 'system'
+export type ThemeMode = 'light' | 'dark' | 'auto'
+
+/**
+ * 計時器預設值介面
+ */
+export interface TimerPreset {
+  /** 預設值 ID */
+  id: string
+  
+  /** 預設值名稱 */
+  name: string
+  
+  /** 計時長度（秒） */
+  duration: number
+  
+  /** 描述 */
+  description: string
+  
+  /** 顏色 */
+  color: string
+  
+  /** 圖示 */
+  icon: string
+  
+  /** 是否為預設 */
+  isDefault: boolean
+  
+  /** 分類 */
+  category: 'health' | 'productivity' | 'break' | 'custom'
+}
+
+/**
+ * 安靜時段設定
+ */
+export interface QuietHours {
+  /** 是否啟用安靜時段 */
+  enabled: boolean
+  
+  /** 開始時間 (HH:mm) */
+  start: string
+  
+  /** 結束時間 (HH:mm) */
+  end: string
+}
+
+/**
+ * 通知設定介面
+ */
+export interface NotificationSettings {
+  /** 是否啟用通知 */
+  enabled: boolean
+  
+  /** 是否啟用音效 */
+  sound: boolean
+  
+  /** 是否啟用震動 */
+  vibration: boolean
+  
+  /** 是否啟用桌面通知 */
+  desktop: boolean
+  
+  /** 是否啟用徽章通知 */
+  badge: boolean
+  
+  /** 是否啟用持續通知 */
+  persistentNotification: boolean
+  
+  /** 安靜時段設定 */
+  quietHours: QuietHours
+}
+
+/**
+ * 音效設定介面
+ */
+export interface SoundSettings {
+  /** 是否啟用音效 */
+  enabled: boolean
+  
+  /** 音量 (0-1) */
+  volume: number
+  
+  /** 音效檔案路徑 */
+  sounds: {
+    complete: string
+    warning: string
+    tick: string
+    start: string
+    pause: string
+  }
+}
+
+/**
+ * 進階設定介面
+ */
+export interface AdvancedSettings {
+  /** 是否啟用分析 */
+  enableAnalytics: boolean
+  
+  /** 自動儲存 */
+  autoSave: boolean
+  
+  /** 背景同步 */
+  backgroundSync: boolean
+  
+  /** 除錯模式 */
+  debugMode: boolean
+  
+  /** 實驗性功能 */
+  experimentalFeatures: boolean
+}
+
+/**
+ * 無障礙設定介面
+ */
+export interface AccessibilitySettings {
+  /** 高對比模式 */
+  highContrast: boolean
+  
+  /** 減少動畫 */
+  reducedMotion: boolean
+  
+  /** 大文字模式 */
+  largeText: boolean
+  
+  /** 螢幕閱讀器支援 */
+  screenReader: boolean
+}
 
 /**
  * 使用者設定介面
  */
 export interface UserSettings {
-  /** 喝水提醒間隔（毫秒），預設 30 分鐘 */
-  waterInterval: number
-  
-  /** 番茄鐘工作間隔（毫秒），預設 25 分鐘 */
-  pomodoroInterval: number
-  
-  /** 番茄鐘休息間隔（毫秒），預設 5 分鐘 */
-  breakInterval: number
-  
-  /** 是否啟用音效提醒 */
-  soundEnabled: boolean
-  
-  /** 音量大小 (0-1) */
-  volume: number
-  
   /** 主題模式 */
   theme: ThemeMode
   
-  /** 是否啟用系統通知 */
-  notificationsEnabled: boolean
+  /** 計時器預設值 */
+  timerPresets: TimerPreset[]
   
-  /** 替代提醒設定 */
-  fallbackAlerts?: FallbackAlertSettings
+  /** 預設計時器預設值 ID */
+  defaultPresetId: string
+  
+  /** 通知設定 */
+  notifications: NotificationSettings
+  
+  /** 音效設定 */
+  sounds: SoundSettings
+  
+  /** 進階設定 */
+  advanced: AdvancedSettings
+  
+  /** 無障礙設定 */
+  accessibility: AccessibilitySettings
 }
 
 /**

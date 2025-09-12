@@ -110,7 +110,7 @@
           
           <button 
             class="quick-action"
-            @click="toggleSettings"
+            @click="openSettings"
           >
             <Icon name="mdi:cog-outline" />
             <span>設定</span>
@@ -127,67 +127,6 @@
       </div>
     </footer>
 
-    <!-- 設定面板 (簡化版) -->
-    <div v-if="showSettingsPanel" class="settings-overlay" @click="closeSettings">
-      <div class="settings-panel" @click.stop>
-        <header class="settings-header">
-          <h3>快速設定</h3>
-          <button class="close-btn" @click="closeSettings">
-            <Icon name="mdi:close" />
-          </button>
-        </header>
-        
-        <div class="settings-content">
-          <!-- 音效設定 -->
-          <div class="setting-item">
-            <label class="setting-label">
-              <Icon name="mdi:volume-high" />
-              <span>提醒音效</span>
-            </label>
-            <div class="setting-control">
-              <input 
-                v-model="soundEnabled" 
-                type="checkbox" 
-                class="setting-toggle"
-                @change="updateSoundSetting"
-              >
-            </div>
-          </div>
-          
-          <!-- 視覺提醒設定 */
-          <div class="setting-item">
-            <label class="setting-label">
-              <Icon name="mdi:eye-outline" />
-              <span>視覺提醒</span>
-            </label>
-            <div class="setting-control">
-              <input 
-                type="checkbox" 
-                v-model="visualAlertsEnabled" 
-                @change="updateVisualSetting"
-                class="setting-toggle"
-              >
-            </div>
-          </div>
-          
-          <!-- 暗色主題 -->
-          <div class="setting-item">
-            <label class="setting-label">
-              <Icon name="mdi:theme-light-dark" />
-              <span>暗色主題</span>
-            </label>
-            <div class="setting-control">
-              <input 
-                v-model="darkMode" 
-                type="checkbox" 
-                class="setting-toggle"
-                @change="updateThemeSetting"
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section></main></div></template>
 
@@ -213,7 +152,6 @@ const notifications = useNotifications()
 const selectedMode = ref<TimerMode | null>(null)
 const customDuration = ref<number>(0)
 const showTimerDetails = ref(false)
-const showSettingsPanel = ref(false)
 const isOnline = ref(true)
 
 // 設定狀態
@@ -342,17 +280,23 @@ function toggleTimerDetails() {
   showTimerDetails.value = !showTimerDetails.value
 }
 
-function toggleSettings() {
-  showSettingsPanel.value = !showSettingsPanel.value
+async function openSettings() {
+  try {
+    await navigateTo('/settings')
+  } catch (error) {
+    console.error('導航到設定頁面失敗:', error)
+    showInfo('無法打開設定頁面')
+  }
 }
 
-function closeSettings() {
-  showSettingsPanel.value = false
-}
 
-function openStats() {
-  // MVP 版本暫時不實作統計頁面
-  showInfo('統計功能將在後續版本推出')
+async function openStats() {
+  try {
+    await navigateTo('/stats')
+  } catch (error) {
+    console.error('導航到統計頁面失敗:', error)
+    showInfo('無法打開統計頁面')
+  }
 }
 
 async function requestNotificationPermission() {
@@ -653,112 +597,6 @@ watch(() => timerState.value.status, (newStatus) => {
   border-color: rgb(59 130 246 / 0.5);
 }
 
-/* 設定面板 */
-.settings-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgb(0 0 0 / 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 1rem;
-}
-
-.settings-panel {
-  background: white;
-  color: #1f2937;
-  border-radius: 1rem;
-  width: 100%;
-  max-width: 400px;
-  max-height: 80vh;
-  overflow: auto;
-}
-
-.settings-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 1.5rem 0;
-  border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 1rem;
-}
-
-.settings-header h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.close-btn {
-  padding: 0.5rem;
-  border: none;
-  background: none;
-  cursor: pointer;
-  border-radius: 0.375rem;
-  transition: background-color 0.2s ease;
-}
-
-.close-btn:hover {
-  background: rgb(0 0 0 / 0.1);
-}
-
-.settings-content {
-  padding: 0 1.5rem 1.5rem;
-}
-
-.setting-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 0;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.setting-item:last-child {
-  border-bottom: none;
-}
-
-.setting-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-}
-
-.setting-toggle {
-  width: 44px;
-  height: 24px;
-  appearance: none;
-  background: #d1d5db;
-  border-radius: 12px;
-  position: relative;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.setting-toggle:checked {
-  background: rgb(59 130 246);
-}
-
-.setting-toggle::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  transition: transform 0.2s ease;
-}
-
-.setting-toggle:checked::before {
-  transform: translateX(20px);
-}
 
 /* 響應式設計 */
 @media (max-width: 640px) {

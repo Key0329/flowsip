@@ -1,0 +1,696 @@
+<!--
+  Statistics Page - FlowSip 統計頁面
+  
+  整合統計功能的完整頁面
+  包含統計卡片、圖表、時間範圍選擇、報表功能等
+  遵循響應式設計和正體中文規範
+-->
+
+<template>
+  <div class="stats-page">
+    <!-- 頁面標題 -->
+    <div class="page-header">
+      <div class="header-content">
+        <h1 class="page-title">📊 統計分析</h1>
+        <p class="page-subtitle">追蹤您的專注時間和習慣養成進度</p>
+      </div>
+      
+      <!-- 操作按鈕 -->
+      <div class="header-actions">
+        <div class="time-range-selector">
+          <select
+            v-model="selectedTimeRange"
+            class="range-select"
+            @change="handleTimeRangeChange"
+          >
+            <option value="today">今日</option>
+            <option value="week">本週</option>
+            <option value="month">本月</option>
+            <option value="all">全部</option>
+          </select>
+        </div>
+        
+        <div class="action-buttons">
+          <button 
+            class="refresh-btn"
+            :disabled="isLoading"
+            @click="handleRefresh"
+          >
+            <span class="btn-icon">🔄</span>
+            <span class="btn-text">刷新</span>
+          </button>
+          
+          <div ref="exportDropdown" class="export-dropdown">
+            <button
+              class="export-btn"
+              @click="toggleExportMenu"
+            >
+              <span class="btn-icon">📊</span>
+              <span class="btn-text">匯出</span>
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            
+            <div v-show="showExportMenu" class="export-menu">
+              <button class="export-option" @click="handleExport('json')">
+                JSON 格式
+              </button>
+              <button class="export-option" @click="handleExport('csv')">
+                CSV 格式
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 載入狀態 -->
+    <div v-if="isLoading" class="loading-container">
+      <div class="loading-spinner"/>
+      <p class="loading-text">載入統計資料中...</p>
+    </div>
+
+    <!-- 錯誤狀態 -->
+    <div v-else-if="error" class="error-container">
+      <div class="error-content">
+        <div class="error-icon">⚠️</div>
+        <h3 class="error-title">載入失敗</h3>
+        <p class="error-message">{{ error.message }}</p>
+        <button class="retry-button" @click="handleRefresh">
+          重新載入
+        </button>
+      </div>
+    </div>
+
+    <!-- 主要內容 */
+    <div v-else class="stats-content">
+      <!-- 摘要卡片區域 -->
+      <section class="summary-section">
+        <h2 class="section-title">統計摘要</h2>
+        
+        <div class="stats-cards-grid">
+          <!-- 總活動數卡片 -->
+          <StatsCard
+            v-if="summary"
+            title="總活動數"
+            subtitle="已完成的計時活動"
+            :value="totalActivities"
+            unit="次"
+            icon="🎯"
+            type="primary"
+            :trend="activitiesTrend"
+            :show-trend="true"
+            :secondary-info="[
+              { label: '喝水', value: `${summary.water.completedSessions} 次` },
+              { label: '番茄鐘', value: `${summary.pomodoro.completedSessions} 次` }
+            ]"
+            :chart-data="recentActivitiesData"
+            :show-mini-chart="true"
+            :last-updated="summary.lastUpdated"
+            :show-footer="true"
+          />
+          
+          <!-- 專注時數卡片 -->
+          <StatsCard
+            v-if="summary"
+            title="專注時數"
+            subtitle="累計專注時間"
+            :value="totalHours"
+            unit="小時"
+            icon="⏰"
+            type="success"
+            :trend="hoursTrend"
+            :show-trend="true"
+            :secondary-info="[
+              { label: '日平均', value: `${averageHoursPerDay} 小時` },
+              { label: '最長連續', value: `${Math.max(summary.water.streak, summary.pomodoro.streak)} 天` }
+            ]"
+            :chart-data="recentHoursData"
+            :show-mini-chart="true"
+            :last-updated="summary.lastUpdated"
+            :show-footer="true"
+          />
+          
+          <!-- 完成率卡片 -->
+          <StatsCard
+            v-if="summary"
+            title="完成率"
+            subtitle="任務完成百分比"
+            :value="completionRatePercent"
+            unit="%"
+            icon="✅"
+            type="info"
+            :trend="completionTrend"
+            :show-trend="true"
+            :secondary-info="[
+              { label: '最佳日期', value: summary.total.bestDay || '暫無' },
+              { label: '最活躍日', value: summary.total.mostActiveDay }
+            ]"
+            :last-updated="summary.lastUpdated"
+            :show-footer="true"
+          />
+          
+          <!-- 連續天數卡片 -->
+          <StatsCard
+            v-if="summary"
+            title="最長連續"
+            subtitle="連續使用天數"
+            :value="maxStreak"
+            unit="天"
+            icon="🔥"
+            type="warning"
+            :secondary-info="[
+              { label: '喝水連續', value: `${summary.water.streak} 天` },
+              { label: '番茄鐘連續', value: `${summary.pomodoro.streak} 天` }
+            ]"
+            :last-updated="summary.lastUpdated"
+            :show-footer="true"
+          />
+        </div>
+      </section>
+
+      <!-- 圖表區域 -->
+      <section class="charts-section">
+        <h2 class="section-title">詳細統計</h2>
+        
+        <div class="charts-container">
+          <StatsCharts
+            :height="400"
+            :show-legend="true"
+            :responsive="true"
+          />
+        </div>
+      </section>
+
+      <!-- 詳細資料區域 -->
+      <section class="details-section">
+        <h2 class="section-title">統計詳情</h2>
+        
+        <div class="details-content">
+          <!-- 今日詳情 -->
+          <div class="detail-card">
+            <h3 class="detail-card-title">今日統計</h3>
+            <div v-if="todayStats" class="detail-card-content">
+              <div class="detail-row">
+                <span class="detail-label">喝水提醒</span>
+                <span class="detail-value">{{ todayStats.waterCompletedCount }} 次</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">番茄鐘</span>
+                <span class="detail-value">{{ todayStats.pomodoroCompletedCount }} 次</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">總計時間</span>
+                <span class="detail-value">{{ formatDuration(todayStats.totalActiveTime) }}</span>
+              </div>
+            </div>
+            <div v-else class="no-data-message">
+              今日尚無統計資料
+            </div>
+          </div>
+          
+          <!-- 本週詳情 -->
+          <div class="detail-card">
+            <h3 class="detail-card-title">本週統計</h3>
+            <div v-if="weekStats" class="detail-card-content">
+              <div class="detail-row">
+                <span class="detail-label">活動天數</span>
+                <span class="detail-value">{{ activeDaysThisWeek }} / 7 天</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">週總時間</span>
+                <span class="detail-value">{{ formatDuration(weekStats.weeklyTotals.totalActiveTime) }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">日均活動</span>
+                <span class="detail-value">{{ weeklyAverageActivities.toFixed(1) }} 次</span>
+              </div>
+            </div>
+            <div v-else class="no-data-message">
+              本週尚無統計資料
+            </div>
+          </div>
+          
+          <!-- 習慣分析 -->
+          <div class="detail-card">
+            <h3 class="detail-card-title">習慣分析</h3>
+            <div v-if="summary" class="detail-card-content">
+              <div class="detail-row">
+                <span class="detail-label">偏好活動</span>
+                <span class="detail-value">{{ preferredActivity }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">平均會話</span>
+                <span class="detail-value">{{ formatDuration(summary.total.averageSessionLength) }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">活躍時段</span>
+                <span class="detail-value">{{ summary.total.mostActiveDay }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useStats } from '~/composables/useStats'
+import type { StatsTimeRange } from '~/composables/useStats'
+import StatsCard from '~/components/Stats/StatsCard.vue'
+import StatsCharts from '~/components/Stats/Charts.vue'
+
+// ============================================================================
+// SEO 設定
+// ============================================================================
+
+useSeoMeta({
+  title: '統計分析 - FlowSip',
+  description: '查看您的專注時間統計和習慣養成進度',
+  ogTitle: '統計分析 - FlowSip',
+  ogDescription: '追蹤您的喝水提醒和番茄鐘使用統計'
+})
+
+// ============================================================================
+// Composables
+// ============================================================================
+
+const {
+  isLoading,
+  error,
+  timeRange,
+  summary,
+  trends,
+  todayStats,
+  weekStats,
+  setTimeRange,
+  recalculateStats,
+  generateReport
+} = useStats()
+
+// ============================================================================
+// 響應式資料
+// ============================================================================
+
+/** 選中的時間範圍 */
+const selectedTimeRange = ref<StatsTimeRange>('today')
+
+/** 是否顯示匯出選單 */
+const showExportMenu = ref(false)
+
+/** 匯出下拉選單引用 */
+const exportDropdown = ref<HTMLElement>()
+
+// ============================================================================
+// 計算屬性
+// ============================================================================
+
+/** 總活動數 */
+const totalActivities = computed(() => {
+  if (!summary.value) return 0
+  return summary.value.water.completedSessions + summary.value.pomodoro.completedSessions
+})
+
+/** 總專注時數 */
+const totalHours = computed(() => {
+  if (!summary.value) return 0
+  return (summary.value.total.activeTime / (60 * 60 * 1000)).toFixed(1)
+})
+
+/** 完成率百分比 */
+const completionRatePercent = computed(() => {
+  if (!summary.value) return 0
+  return Math.round(summary.value.total.completionRate * 100)
+})
+
+/** 最長連續天數 */
+const maxStreak = computed(() => {
+  if (!summary.value) return 0
+  return Math.max(summary.value.water.streak, summary.value.pomodoro.streak)
+})
+
+/** 日平均專注時數 */
+const averageHoursPerDay = computed(() => {
+  if (!summary.value || summary.value.totalDays === 0) return '0.0'
+  const avgMs = summary.value.total.activeTime / summary.value.totalDays
+  return (avgMs / (60 * 60 * 1000)).toFixed(1)
+})
+
+/** 活動數趨勢 */
+const activitiesTrend = computed(() => {
+  // 簡化的趨勢計算，實際可根據歷史資料計算
+  if (trends.value.length < 2) return 0
+  
+  const recent = trends.value.slice(-7)
+  const earlier = trends.value.slice(-14, -7)
+  
+  if (earlier.length === 0) return 0
+  
+  const recentAvg = recent.reduce((sum, t) => sum + t.waterCount + t.pomodoroCount, 0) / recent.length
+  const earlierAvg = earlier.reduce((sum, t) => sum + t.waterCount + t.pomodoroCount, 0) / earlier.length
+  
+  if (earlierAvg === 0) return 0
+  return ((recentAvg - earlierAvg) / earlierAvg) * 100
+})
+
+/** 時數趨勢 */
+const hoursTrend = computed(() => {
+  if (trends.value.length < 2) return 0
+  
+  const recent = trends.value.slice(-7)
+  const earlier = trends.value.slice(-14, -7)
+  
+  if (earlier.length === 0) return 0
+  
+  const recentAvg = recent.reduce((sum, t) => sum + t.totalHours, 0) / recent.length
+  const earlierAvg = earlier.reduce((sum, t) => sum + t.totalHours, 0) / earlier.length
+  
+  if (earlierAvg === 0) return 0
+  return ((recentAvg - earlierAvg) / earlierAvg) * 100
+})
+
+/** 完成率趨勢 */
+const completionTrend = computed(() => {
+  // 簡化實作，實際可根據歷史完成率計算
+  return 0
+})
+
+/** 最近活動數資料（用於迷你圖表） */
+const recentActivitiesData = computed(() => {
+  return trends.value.slice(-7).map(t => t.waterCount + t.pomodoroCount)
+})
+
+/** 最近時數資料（用於迷你圖表） */
+const recentHoursData = computed(() => {
+  return trends.value.slice(-7).map(t => t.totalHours)
+})
+
+/** 本週活動天數 */
+const activeDaysThisWeek = computed(() => {
+  if (!weekStats.value) return 0
+  return weekStats.value.dailyStats.filter(day => 
+    day.waterCompletedCount > 0 || day.pomodoroCompletedCount > 0
+  ).length
+})
+
+/** 本週平均活動數 */
+const weeklyAverageActivities = computed(() => {
+  if (!weekStats.value) return 0
+  const total = weekStats.value.weeklyTotals.waterCompletedCount + 
+                weekStats.value.weeklyTotals.pomodoroCompletedCount
+  return total / 7
+})
+
+/** 偏好活動類型 */
+const preferredActivity = computed(() => {
+  if (!summary.value) return '暫無資料'
+  
+  const waterSessions = summary.value.water.completedSessions
+  const pomodoroSessions = summary.value.pomodoro.completedSessions
+  
+  if (waterSessions === pomodoroSessions) return '均衡使用'
+  return waterSessions > pomodoroSessions ? '喝水提醒' : '番茄鐘'
+})
+
+// ============================================================================
+// 方法
+// ============================================================================
+
+/** 處理時間範圍變更 */
+function handleTimeRangeChange() {
+  setTimeRange(selectedTimeRange.value)
+}
+
+/** 處理刷新 */
+async function handleRefresh() {
+  await recalculateStats()
+}
+
+/** 切換匯出選單 */
+function toggleExportMenu() {
+  showExportMenu.value = !showExportMenu.value
+}
+
+/** 處理匯出 */
+async function handleExport(format: 'json' | 'csv') {
+  try {
+    const reportData = await generateReport(format)
+    
+    const blob = new Blob([reportData], {
+      type: format === 'json' ? 'application/json' : 'text/csv'
+    })
+    
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `flowsip-stats-${new Date().toISOString().split('T')[0]}.${format}`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+    
+    showExportMenu.value = false
+  } catch (err) {
+    console.error('匯出失敗:', err)
+    alert('匯出失敗，請稍後再試')
+  }
+}
+
+/** 格式化持續時間 */
+function formatDuration(ms: number): string {
+  const hours = Math.floor(ms / (60 * 60 * 1000))
+  const minutes = Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000))
+  
+  if (hours > 0) {
+    return `${hours} 小時 ${minutes} 分鐘`
+  }
+  return `${minutes} 分鐘`
+}
+
+/** 處理點擊外部關閉選單 */
+function handleClickOutside(event: Event) {
+  if (exportDropdown.value && !exportDropdown.value.contains(event.target as Node)) {
+    showExportMenu.value = false
+  }
+}
+
+// ============================================================================
+// 生命週期
+// ============================================================================
+
+onMounted(() => {
+  // 初始化時間範圍
+  selectedTimeRange.value = timeRange.value
+  
+  // 添加點擊外部監聽器
+  document.addEventListener('click', handleClickOutside)
+  
+  // 如果沒有資料，觸發載入
+  if (!isLoading.value && !summary.value) {
+    recalculateStats()
+  }
+})
+
+onUnmounted(() => {
+  // 移除點擊外部監聽器
+  document.removeEventListener('click', handleClickOutside)
+})
+</script>
+
+<style scoped>
+.stats-page {
+  @apply min-h-screen bg-gray-50 pb-8;
+  @apply dark:bg-gray-900;
+}
+
+/* 頁面標題 */
+.page-header {
+  @apply bg-white shadow-sm border-b border-gray-200 px-4 py-6 mb-8;
+  @apply dark:bg-gray-800 dark:border-gray-700;
+}
+
+.header-content {
+  @apply max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4;
+}
+
+.page-title {
+  @apply text-2xl font-bold text-gray-900;
+  @apply dark:text-gray-100;
+}
+
+.page-subtitle {
+  @apply text-sm text-gray-600 mt-1;
+  @apply dark:text-gray-400;
+}
+
+.header-actions {
+  @apply flex items-center gap-4;
+}
+
+.time-range-selector .range-select {
+  @apply px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm;
+  @apply focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  @apply dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200;
+}
+
+.action-buttons {
+  @apply flex items-center gap-2;
+}
+
+.refresh-btn,
+.export-btn {
+  @apply flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg;
+  @apply hover:bg-blue-600 transition-colors text-sm font-medium;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.export-dropdown {
+  @apply relative;
+}
+
+.export-menu {
+  @apply absolute right-0 top-full mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-200;
+  @apply dark:bg-gray-700 dark:border-gray-600;
+  @apply z-50;
+}
+
+.export-option {
+  @apply w-full px-4 py-2 text-left text-sm hover:bg-gray-50;
+  @apply dark:hover:bg-gray-600 dark:text-gray-200;
+  @apply first:rounded-t-lg last:rounded-b-lg;
+}
+
+.dropdown-arrow {
+  @apply text-xs transition-transform;
+}
+
+/* 載入和錯誤狀態 */
+.loading-container,
+.error-container {
+  @apply flex flex-col items-center justify-center py-16 px-4;
+}
+
+.loading-spinner {
+  @apply w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full mb-4;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.error-content {
+  @apply text-center max-w-md;
+}
+
+.error-icon {
+  @apply text-4xl mb-4;
+}
+
+.error-title {
+  @apply text-xl font-semibold text-gray-900 mb-2;
+  @apply dark:text-gray-100;
+}
+
+.error-message {
+  @apply text-gray-600 mb-6;
+  @apply dark:text-gray-400;
+}
+
+.retry-button {
+  @apply px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors;
+}
+
+/* 主要內容 */
+.stats-content {
+  @apply max-w-7xl mx-auto px-4 space-y-8;
+}
+
+.section-title {
+  @apply text-xl font-semibold text-gray-900 mb-6;
+  @apply dark:text-gray-100;
+}
+
+/* 統計卡片網格 */
+.stats-cards-grid {
+  @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4;
+}
+
+/* 圖表區域 */
+.charts-container {
+  @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+  @apply dark:bg-gray-800 dark:border-gray-700;
+}
+
+/* 詳細資料區域 */
+.details-content {
+  @apply grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.detail-card {
+  @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+  @apply dark:bg-gray-800 dark:border-gray-700;
+}
+
+.detail-card-title {
+  @apply text-lg font-semibold text-gray-900 mb-4;
+  @apply dark:text-gray-100;
+}
+
+.detail-card-content {
+  @apply space-y-3;
+}
+
+.detail-row {
+  @apply flex justify-between items-center py-2 border-b border-gray-100;
+  @apply dark:border-gray-700 last:border-b-0;
+}
+
+.detail-label {
+  @apply text-sm text-gray-600;
+  @apply dark:text-gray-400;
+}
+
+.detail-value {
+  @apply text-sm font-medium text-gray-900;
+  @apply dark:text-gray-100;
+}
+
+.no-data-message {
+  @apply text-center text-gray-500 py-4;
+  @apply dark:text-gray-400;
+}
+
+/* 動畫 */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 響應式設計 */
+@media (max-width: 640px) {
+  .page-header {
+    @apply px-4 py-4;
+  }
+  
+  .header-actions {
+    @apply flex-col gap-3;
+  }
+  
+  .action-buttons {
+    @apply w-full justify-between;
+  }
+  
+  .stats-cards-grid {
+    @apply grid-cols-1;
+  }
+  
+  .details-content {
+    @apply grid-cols-1;
+  }
+  
+  .btn-text {
+    @apply hidden;
+  }
+}
+</style>

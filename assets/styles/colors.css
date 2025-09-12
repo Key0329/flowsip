@@ -1,0 +1,387 @@
+/* FlowSip 色彩系統 - 完整色彩變數定義
+ * 包含主題色彩、語義色彩、狀態色彩和暗色主題支援
+ * 基於 Tailwind CSS 色彩系統進行擴展和客製化
+ */
+
+/* ==========================================================================
+   主色彩調色板 (Primary Colors)
+   ========================================================================== */
+
+:root {
+  /* 水藍色系 - 主品牌色彩 (Water/Hydration Theme) */
+  --color-water-50: 237, 249, 254;   /* rgb(237, 249, 254) - #edf9fe */
+  --color-water-100: 222, 244, 253;  /* rgb(222, 244, 253) - #def4fd */
+  --color-water-200: 186, 230, 253;  /* rgb(186, 230, 253) - #bae6fd */
+  --color-water-300: 125, 211, 252;  /* rgb(125, 211, 252) - #7dd3fc */
+  --color-water-400: 56, 189, 248;   /* rgb(56, 189, 248) - #38bdf8 */
+  --color-water-500: 14, 165, 233;   /* rgb(14, 165, 233) - #0ea5e9 */
+  --color-water-600: 2, 132, 199;    /* rgb(2, 132, 199) - #0284c7 */
+  --color-water-700: 3, 105, 161;    /* rgb(3, 105, 161) - #0369a1 */
+  --color-water-800: 7, 89, 133;     /* rgb(7, 89, 133) - #075985 */
+  --color-water-900: 12, 74, 110;    /* rgb(12, 74, 110) - #0c4a6e */
+  --color-water-950: 8, 47, 73;      /* rgb(8, 47, 73) - #082f49 */
+
+  /* 輔助色彩 - 功能性色彩 */
+  --color-focus-50: 240, 253, 244;   /* rgb(240, 253, 244) - #f0fdf4 */
+  --color-focus-100: 220, 252, 231;  /* rgb(220, 252, 231) - #dcfce7 */
+  --color-focus-200: 187, 247, 208;  /* rgb(187, 247, 208) - #bbf7d0 */
+  --color-focus-300: 134, 239, 172;  /* rgb(134, 239, 172) - #86efac */
+  --color-focus-400: 74, 222, 128;   /* rgb(74, 222, 128) - #4ade80 */
+  --color-focus-500: 34, 197, 94;    /* rgb(34, 197, 94) - #22c55e */
+  --color-focus-600: 22, 163, 74;    /* rgb(22, 163, 74) - #16a34a */
+  --color-focus-700: 21, 128, 61;    /* rgb(21, 128, 61) - #15803d */
+  --color-focus-800: 22, 101, 52;    /* rgb(22, 101, 52) - #166534 */
+  --color-focus-900: 20, 83, 45;     /* rgb(20, 83, 45) - #14532d */
+
+  /* 番茄鐘紅色系 */
+  --color-pomodoro-50: 254, 242, 242;  /* rgb(254, 242, 242) - #fef2f2 */
+  --color-pomodoro-100: 254, 226, 226; /* rgb(254, 226, 226) - #fee2e2 */
+  --color-pomodoro-200: 254, 202, 202; /* rgb(254, 202, 202) - #fecaca */
+  --color-pomodoro-300: 252, 165, 165; /* rgb(252, 165, 165) - #fca5a5 */
+  --color-pomodoro-400: 248, 113, 113; /* rgb(248, 113, 113) - #f87171 */
+  --color-pomodoro-500: 239, 68, 68;   /* rgb(239, 68, 68) - #ef4444 */
+  --color-pomodoro-600: 220, 38, 38;   /* rgb(220, 38, 38) - #dc2626 */
+  --color-pomodoro-700: 185, 28, 28;   /* rgb(185, 28, 28) - #b91c1c */
+  --color-pomodoro-800: 153, 27, 27;   /* rgb(153, 27, 27) - #991b1b */
+  --color-pomodoro-900: 127, 29, 29;   /* rgb(127, 29, 29) - #7f1d1d */
+}
+
+/* ==========================================================================
+   語義色彩 (Semantic Colors)
+   ========================================================================== */
+
+:root {
+  /* 成功狀態 */
+  --color-success-50: var(--color-focus-50);
+  --color-success-100: var(--color-focus-100);
+  --color-success-200: var(--color-focus-200);
+  --color-success-300: var(--color-focus-300);
+  --color-success-400: var(--color-focus-400);
+  --color-success-500: var(--color-focus-500);
+  --color-success-600: var(--color-focus-600);
+  --color-success-700: var(--color-focus-700);
+  --color-success-800: var(--color-focus-800);
+  --color-success-900: var(--color-focus-900);
+
+  /* 警告狀態 */
+  --color-warning-50: 255, 251, 235;   /* rgb(255, 251, 235) - #fffbeb */
+  --color-warning-100: 254, 243, 199;  /* rgb(254, 243, 199) - #fef3c7 */
+  --color-warning-200: 253, 230, 138;  /* rgb(253, 230, 138) - #fde68a */
+  --color-warning-300: 252, 211, 77;   /* rgb(252, 211, 77) - #fcd34d */
+  --color-warning-400: 251, 191, 36;   /* rgb(251, 191, 36) - #fbbf24 */
+  --color-warning-500: 245, 158, 11;   /* rgb(245, 158, 11) - #f59e0b */
+  --color-warning-600: 217, 119, 6;    /* rgb(217, 119, 6) - #d97706 */
+  --color-warning-700: 180, 83, 9;     /* rgb(180, 83, 9) - #b45309 */
+  --color-warning-800: 146, 64, 14;    /* rgb(146, 64, 14) - #92400e */
+  --color-warning-900: 120, 53, 15;    /* rgb(120, 53, 15) - #78350f */
+
+  /* 錯誤狀態 */
+  --color-error-50: var(--color-pomodoro-50);
+  --color-error-100: var(--color-pomodoro-100);
+  --color-error-200: var(--color-pomodoro-200);
+  --color-error-300: var(--color-pomodoro-300);
+  --color-error-400: var(--color-pomodoro-400);
+  --color-error-500: var(--color-pomodoro-500);
+  --color-error-600: var(--color-pomodoro-600);
+  --color-error-700: var(--color-pomodoro-700);
+  --color-error-800: var(--color-pomodoro-800);
+  --color-error-900: var(--color-pomodoro-900);
+
+  /* 資訊狀態 */
+  --color-info-50: var(--color-water-50);
+  --color-info-100: var(--color-water-100);
+  --color-info-200: var(--color-water-200);
+  --color-info-300: var(--color-water-300);
+  --color-info-400: var(--color-water-400);
+  --color-info-500: var(--color-water-500);
+  --color-info-600: var(--color-water-600);
+  --color-info-700: var(--color-water-700);
+  --color-info-800: var(--color-water-800);
+  --color-info-900: var(--color-water-900);
+}
+
+/* ==========================================================================
+   中性色彩 (Neutral Colors)
+   ========================================================================== */
+
+:root {
+  /* 冷灰色系 (Cool Gray) */
+  --color-neutral-50: 248, 250, 252;   /* rgb(248, 250, 252) - #f8fafc */
+  --color-neutral-100: 241, 245, 249;  /* rgb(241, 245, 249) - #f1f5f9 */
+  --color-neutral-200: 226, 232, 240;  /* rgb(226, 232, 240) - #e2e8f0 */
+  --color-neutral-300: 203, 213, 225;  /* rgb(203, 213, 225) - #cbd5e1 */
+  --color-neutral-400: 148, 163, 184;  /* rgb(148, 163, 184) - #94a3b8 */
+  --color-neutral-500: 100, 116, 139;  /* rgb(100, 116, 139) - #64748b */
+  --color-neutral-600: 71, 85, 105;    /* rgb(71, 85, 105) - #475569 */
+  --color-neutral-700: 51, 65, 85;     /* rgb(51, 65, 85) - #334155 */
+  --color-neutral-800: 30, 41, 59;     /* rgb(30, 41, 59) - #1e293b */
+  --color-neutral-900: 15, 23, 42;     /* rgb(15, 23, 42) - #0f172a */
+  --color-neutral-950: 2, 6, 23;       /* rgb(2, 6, 23) - #020617 */
+
+  /* 暖灰色系 (Warm Gray) */
+  --color-warm-50: 250, 250, 249;      /* rgb(250, 250, 249) - #fafaf9 */
+  --color-warm-100: 245, 245, 244;     /* rgb(245, 245, 244) - #f5f5f4 */
+  --color-warm-200: 231, 229, 228;     /* rgb(231, 229, 228) - #e7e5e4 */
+  --color-warm-300: 214, 211, 209;     /* rgb(214, 211, 209) - #d6d3d1 */
+  --color-warm-400: 168, 162, 158;     /* rgb(168, 162, 158) - #a8a29e */
+  --color-warm-500: 120, 113, 108;     /* rgb(120, 113, 108) - #78716c */
+  --color-warm-600: 87, 83, 78;        /* rgb(87, 83, 78) - #57534e */
+  --color-warm-700: 68, 64, 60;        /* rgb(68, 64, 60) - #44403c */
+  --color-warm-800: 41, 37, 36;        /* rgb(41, 37, 36) - #292524 */
+  --color-warm-900: 28, 25, 23;        /* rgb(28, 25, 23) - #1c1917 */
+}
+
+/* ==========================================================================
+   主題專用色彩變數 (Theme-specific Color Variables)
+   ========================================================================== */
+
+:root {
+  /* 主品牌色彩 */
+  --color-primary: var(--color-water-500);
+  --color-primary-foreground: 255, 255, 255;
+  --color-primary-light: var(--color-water-100);
+  --color-primary-dark: var(--color-water-700);
+
+  /* 次要品牌色彩 */
+  --color-secondary: var(--color-neutral-500);
+  --color-secondary-foreground: 255, 255, 255;
+  --color-secondary-light: var(--color-neutral-100);
+  --color-secondary-dark: var(--color-neutral-700);
+
+  /* 背景色彩 */
+  --color-background: 255, 255, 255;
+  --color-background-secondary: var(--color-neutral-50);
+  --color-background-tertiary: var(--color-neutral-100);
+  
+  /* 前景色彩 */
+  --color-foreground: var(--color-neutral-900);
+  --color-foreground-secondary: var(--color-neutral-700);
+  --color-foreground-tertiary: var(--color-neutral-500);
+
+  /* 邊框色彩 */
+  --color-border: var(--color-neutral-200);
+  --color-border-secondary: var(--color-neutral-300);
+  --color-border-focus: var(--color-water-500);
+
+  /* 陰影色彩 */
+  --color-shadow: var(--color-neutral-900);
+  --color-shadow-light: var(--color-neutral-300);
+
+  /* 功能色彩 */
+  --color-timer-water: var(--color-water-500);
+  --color-timer-pomodoro: var(--color-pomodoro-500);
+  --color-timer-break: var(--color-focus-500);
+  --color-timer-complete: var(--color-success-500);
+}
+
+/* ==========================================================================
+   暗色主題 (Dark Theme)
+   ========================================================================== */
+
+.dark {
+  /* 背景色彩 - 暗色主題 */
+  --color-background: var(--color-neutral-900);
+  --color-background-secondary: var(--color-neutral-800);
+  --color-background-tertiary: var(--color-neutral-700);
+  
+  /* 前景色彩 - 暗色主題 */
+  --color-foreground: var(--color-neutral-50);
+  --color-foreground-secondary: var(--color-neutral-300);
+  --color-foreground-tertiary: var(--color-neutral-400);
+
+  /* 邊框色彩 - 暗色主題 */
+  --color-border: var(--color-neutral-700);
+  --color-border-secondary: var(--color-neutral-600);
+
+  /* 陰影色彩 - 暗色主題 */
+  --color-shadow: 0, 0, 0;
+  --color-shadow-light: var(--color-neutral-800);
+
+  /* 主品牌色彩調整 */
+  --color-primary-light: var(--color-water-800);
+  --color-primary-dark: var(--color-water-300);
+
+  /* 次要品牌色彩調整 */
+  --color-secondary-light: var(--color-neutral-800);
+  --color-secondary-dark: var(--color-neutral-300);
+}
+
+/* ==========================================================================
+   高對比度模式 (High Contrast)
+   ========================================================================== */
+
+.high-contrast {
+  /* 增強對比度 */
+  --color-primary: var(--color-water-600);
+  --color-background: 255, 255, 255;
+  --color-foreground: 0, 0, 0;
+  --color-border: 0, 0, 0;
+  
+  /* 狀態色彩強化 */
+  --color-success-500: 0, 150, 0;      /* 更深的綠色 */
+  --color-error-500: 200, 0, 0;        /* 更深的紅色 */
+  --color-warning-500: 255, 140, 0;    /* 更深的橙色 */
+}
+
+.high-contrast.dark {
+  /* 暗色高對比度模式 */
+  --color-background: 0, 0, 0;
+  --color-foreground: 255, 255, 255;
+  --color-border: 255, 255, 255;
+  --color-primary: var(--color-water-300);
+}
+
+/* ==========================================================================
+   輔助工具類別 (Utility Classes)
+   ========================================================================== */
+
+/* 色彩工具類別 */
+.text-water-500 { color: rgb(var(--color-water-500)); }
+.bg-water-500 { background-color: rgb(var(--color-water-500)); }
+.border-water-500 { border-color: rgb(var(--color-water-500)); }
+
+.text-focus-500 { color: rgb(var(--color-focus-500)); }
+.bg-focus-500 { background-color: rgb(var(--color-focus-500)); }
+.border-focus-500 { border-color: rgb(var(--color-focus-500)); }
+
+.text-pomodoro-500 { color: rgb(var(--color-pomodoro-500)); }
+.bg-pomodoro-500 { background-color: rgb(var(--color-pomodoro-500)); }
+.border-pomodoro-500 { border-color: rgb(var(--color-pomodoro-500)); }
+
+/* 語義色彩工具類別 */
+.text-primary { color: rgb(var(--color-primary)); }
+.bg-primary { background-color: rgb(var(--color-primary)); }
+.border-primary { border-color: rgb(var(--color-primary)); }
+
+.text-success { color: rgb(var(--color-success-500)); }
+.bg-success { background-color: rgb(var(--color-success-500)); }
+.border-success { border-color: rgb(var(--color-success-500)); }
+
+.text-warning { color: rgb(var(--color-warning-500)); }
+.bg-warning { background-color: rgb(var(--color-warning-500)); }
+.border-warning { border-color: rgb(var(--color-warning-500)); }
+
+.text-error { color: rgb(var(--color-error-500)); }
+.bg-error { background-color: rgb(var(--color-error-500)); }
+.border-error { border-color: rgb(var(--color-error-500)); }
+
+/* 透明度變化 */
+.bg-primary-10 { background-color: rgb(var(--color-primary) / 0.1); }
+.bg-primary-20 { background-color: rgb(var(--color-primary) / 0.2); }
+.bg-primary-30 { background-color: rgb(var(--color-primary) / 0.3); }
+.bg-primary-50 { background-color: rgb(var(--color-primary) / 0.5); }
+
+.text-foreground { color: rgb(var(--color-foreground)); }
+.text-foreground-secondary { color: rgb(var(--color-foreground-secondary)); }
+.text-foreground-tertiary { color: rgb(var(--color-foreground-tertiary)); }
+
+.bg-background { background-color: rgb(var(--color-background)); }
+.bg-background-secondary { background-color: rgb(var(--color-background-secondary)); }
+.bg-background-tertiary { background-color: rgb(var(--color-background-tertiary)); }
+
+.border-border { border-color: rgb(var(--color-border)); }
+.border-border-secondary { border-color: rgb(var(--color-border-secondary)); }
+
+/* ==========================================================================
+   動畫和轉場效果相關色彩
+   ========================================================================== */
+
+:root {
+  /* 漸變色彩定義 */
+  --gradient-water: linear-gradient(135deg, 
+    rgb(var(--color-water-400)), 
+    rgb(var(--color-water-600))
+  );
+  
+  --gradient-focus: linear-gradient(135deg, 
+    rgb(var(--color-focus-400)), 
+    rgb(var(--color-focus-600))
+  );
+  
+  --gradient-pomodoro: linear-gradient(135deg, 
+    rgb(var(--color-pomodoro-400)), 
+    rgb(var(--color-pomodoro-600))
+  );
+
+  /* 進度條色彩 */
+  --gradient-progress-water: linear-gradient(90deg,
+    rgb(var(--color-water-300)),
+    rgb(var(--color-water-500)),
+    rgb(var(--color-water-700))
+  );
+
+  --gradient-progress-focus: linear-gradient(90deg,
+    rgb(var(--color-focus-300)),
+    rgb(var(--color-focus-500)),
+    rgb(var(--color-focus-700))
+  );
+
+  /* 陰影漸變 */
+  --shadow-primary: 0 4px 20px rgb(var(--color-water-500) / 0.3);
+  --shadow-success: 0 4px 20px rgb(var(--color-success-500) / 0.3);
+  --shadow-error: 0 4px 20px rgb(var(--color-error-500) / 0.3);
+}
+
+/* 漸變工具類別 */
+.bg-gradient-water { background: var(--gradient-water); }
+.bg-gradient-focus { background: var(--gradient-focus); }
+.bg-gradient-pomodoro { background: var(--gradient-pomodoro); }
+
+/* 陰影工具類別 */
+.shadow-primary { box-shadow: var(--shadow-primary); }
+.shadow-success { box-shadow: var(--shadow-success); }
+.shadow-error { box-shadow: var(--shadow-error); }
+
+/* ==========================================================================
+   列印模式色彩優化
+   ========================================================================== */
+
+@media print {
+  :root {
+    --color-background: 255, 255, 255;
+    --color-foreground: 0, 0, 0;
+    --color-border: 0, 0, 0;
+    --color-primary: 0, 0, 0;
+  }
+  
+  /* 移除不必要的背景色 */
+  * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ==========================================================================
+   色彩無障礙支援
+   ========================================================================== */
+
+/* 減少動畫偏好的使用者 */
+@media (prefers-reduced-motion: reduce) {
+  .bg-gradient-water,
+  .bg-gradient-focus,
+  .bg-gradient-pomodoro {
+    background: rgb(var(--color-primary));
+  }
+}
+
+/* 高對比偏好的使用者 */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: var(--color-neutral-900);
+    --color-foreground: var(--color-neutral-900);
+  }
+  
+  .dark {
+    --color-border: var(--color-neutral-50);
+    --color-foreground: var(--color-neutral-50);
+  }
+}
+
+/* 強制深色主題的使用者 */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-background: var(--color-neutral-900);
+    --color-foreground: var(--color-neutral-50);
+  }
+}
