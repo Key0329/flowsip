@@ -253,30 +253,30 @@ Task: "useTimer composable 在 composables/useTimer.ts"
 
 ### 主題系統
 
-- [ ] **T048** [P] 主題管理 composable (`composables/useTheme.ts` - 主題切換和持久化)
-- [ ] **T049** [P] 深色模式樣式 (`assets/styles/dark-theme.css` - 深色主題變數)
-- [ ] **T050** [P] 淺色模式樣式 (`assets/styles/light-theme.css` - 淺色主題變數)
-- [ ] **T051** [P] 主題動態切換 (更新所有元件支援主題變數)
+- [x] **T048** [P] 主題管理 composable (`composables/useTheme.ts` - 主題切換和持久化) ✅
+- [x] **T049** [P] 深色模式樣式 (`assets/styles/dark-theme.css` - 深色主題變數) ✅
+- [x] **T050** [P] 淺色模式樣式 (`assets/styles/light-theme.css` - 淺色主題變數) ✅
+- [x] **T051** [P] 主題動態切換 (更新所有元件支援主題變數) ✅
 
 ### 個人化選項
 
-- [ ] **T052** [P] 字型大小調整 (`components/Settings/FontSize.vue` - 無障礙字型設定)
-- [ ] **T053** [P] 動畫效果控制 (`components/Settings/AnimationSettings.vue` - 減少動畫選項)
-- [ ] **T054** [P] 通知偏好設定 (`components/Settings/NotificationPrefs.vue` - 通知方式自訂)
+- [x] **T052** [P] 字型大小調整 (`components/Settings/FontSize.vue` - 無障礙字型設定) ✅
+- [x] **T053** [P] 動畫效果控制 (`components/Settings/AnimationSettings.vue` - 減少動畫選項) ✅
+- [x] **T054** [P] 通知偏好設定 (`components/Settings/NotificationPrefs.vue` - 通知方式自訂) ✅
 
 ## Phase 4.4: PWA 體驗優化
 
 ### 安裝與更新
 
-- [ ] **T055** [P] PWA 安裝提示優化 (`components/PWA/InstallPrompt.vue` - 智能安裝提示)
-- [ ] **T056** [P] 應用更新通知 (`components/PWA/UpdateNotifier.vue` - 新版本提示)
-- [ ] **T057** [P] 離線狀態指示 (`components/Common/OfflineIndicator.vue` - 網路狀態顯示)
+- [x] **T055** [P] PWA 安裝提示優化 (`components/PWA/InstallPrompt.vue` - 智能安裝提示) ✅
+- [x] **T056** [P] 應用更新通知 (`components/PWA/UpdateNotifier.vue` - 新版本提示) ✅
+- [x] **T057** [P] 離線狀態指示 (`components/Common/OfflineIndicator.vue` - 網路狀態顯示) ✅
 
 ### 啟動體驗
 
-- [ ] **T058** [P] 啟動畫面設計 (`public/splash/` - 各尺寸啟動畫面圖片)
-- [ ] **T059** [P] 載入進度指示 (更新 `app.vue` - 應用啟動載入狀態)
-- [ ] **T060** [P] 首次使用引導 (`components/Onboarding/Welcome.vue` - 功能介紹流程)
+- [x] **T058** [P] 啟動畫面設計 (`public/splash/` - 各尺寸啟動畫面圖片) ✅
+- [x] **T059** [P] 載入進度指示 (更新 `app.vue` - 應用啟動載入狀態) ✅
+- [x] **T060** [P] 首次使用引導 (`components/Onboarding/Welcome.vue` - 功能介紹流程) ✅
 
 ## Phase 4.5: 測試基礎設施
 
