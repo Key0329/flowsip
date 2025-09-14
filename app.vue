@@ -68,22 +68,29 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
+// 定義 PWA 安裝提示事件類型
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
+
+// 主題管理
+const themeManager = useTheme()
+
 // 響應式狀態
 const isOnline = ref(true)
 const isLoading = ref(false)
 const showUpdatePrompt = ref(false)
 const showInstallPrompt = ref(false)
-const theme = ref<'light' | 'dark' | 'auto'>('auto')
 
 // PWA 相關
-let deferredPrompt: any = null
+let deferredPrompt: Event | null = null
 
 // 計算屬性
 const appClasses = computed(() => {
   return {
-    'theme-light': theme.value === 'light',
-    'theme-dark': theme.value === 'dark',
-    'theme-auto': theme.value === 'auto',
+    [themeManager.effectiveTheme.value]: true,
+    'high-contrast': themeManager.isHighContrast.value,
     'app-offline': !isOnline.value,
     'app-loading': isLoading.value
   }
@@ -105,12 +112,12 @@ function handleBeforeInstallPrompt(event: Event) {
 }
 
 async function installApp() {
-  if (deferredPrompt) {
+  if (deferredPrompt && 'prompt' in deferredPrompt) {
     // 顯示安裝提示
-    deferredPrompt.prompt()
+    const promptEvent = deferredPrompt as BeforeInstallPromptEvent
+    promptEvent.prompt()
     // 等待使用者回應
-    const { outcome } = await deferredPrompt.userChoice
-    console.log(`使用者 ${outcome === 'accepted' ? '接受' : '拒絕'} 安裝提示`)
+    await promptEvent.userChoice
     // 清理
     deferredPrompt = null
   }
@@ -142,29 +149,12 @@ function dismissUpdate() {
   showUpdatePrompt.value = false
 }
 
-// 主題管理
+// 主題初始化
 function initializeTheme() {
-  // 從 localStorage 載入主題設定
-  const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'auto'
-  if (savedTheme) {
-    theme.value = savedTheme
-  }
-  
-  // 應用主題到 document
-  applyTheme()
+  // 使用 themeManager 中的方法
+  themeManager.initializeTheme()
 }
 
-function applyTheme() {
-  const root = document.documentElement
-  
-  if (theme.value === 'auto') {
-    // 跟隨系統主題
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    root.classList.toggle('dark', prefersDark)
-  } else {
-    root.classList.toggle('dark', theme.value === 'dark')
-  }
-}
 
 // 載入狀態管理
 function showLoading() {
@@ -193,9 +183,7 @@ onMounted(() => {
     navigator.serviceWorker.addEventListener('controllerchange', handleAppUpdateAvailable)
   }
   
-  // 監聽系統主題變化
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  mediaQuery.addEventListener('change', applyTheme)
+  // 系統主題變化監聽已在 themeManager 中處理
   
   // 初始載入完成
   nextTick(() => {
@@ -211,12 +199,18 @@ onUnmounted(() => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.removeEventListener('controllerchange', handleAppUpdateAvailable)
   }
+  
+  // 清理主題管理器
+  themeManager.cleanup()
 })
 
 // 全域錯誤處理
 onErrorCaptured((error, instance, info) => {
-  console.error('應用程式錯誤：', error, info)
-  // 可以在這裡添加錯誤上報邏輯
+  // 開發環境下顯示錯誤，生產環境下可添加錯誤上報邏輯
+  if (import.meta.dev) {
+    // eslint-disable-next-line no-console
+    console.error('應用程式錯誤：', error, info)
+  }
   return false
 })
 

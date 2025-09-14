@@ -117,7 +117,7 @@
               placeholder="簡短說明這個計時器的用途"
               maxlength="50"
               rows="2"
-            ></textarea>
+            />
           </div>
 
           <!-- 時間設定 -->
@@ -304,8 +304,8 @@
     <div class="reset-section">
       <button
         class="reset-button"
-        @click="resetTimeSettings"
         :disabled="isLoading"
+        @click="resetTimeSettings"
       >
         <Icon name="mdi:restore" />
         <span>重置時間設定</span>

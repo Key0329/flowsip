@@ -257,15 +257,63 @@ function formatDuration(milliseconds: number): string {
 
 /* 狀態變體 */
 .timer-display--running {
-  box-shadow: 0 0 20px rgb(34 197 94 / 0.3);
+  box-shadow: 
+    0 0 20px rgb(34 197 94 / 0.3),
+    0 8px 32px rgb(34 197 94 / 0.1);
+  animation: runningGlow 4s ease-in-out infinite;
 }
 
 .timer-display--paused {
-  box-shadow: 0 0 20px rgb(234 179 8 / 0.3);
+  box-shadow: 
+    0 0 20px rgb(234 179 8 / 0.3),
+    0 8px 32px rgb(234 179 8 / 0.1);
+  animation: pausedPulse 2s ease-in-out infinite;
 }
 
 .timer-display--completed {
-  box-shadow: 0 0 20px rgb(168 85 247 / 0.3);
+  box-shadow: 
+    0 0 30px rgb(168 85 247 / 0.4),
+    0 12px 48px rgb(168 85 247 / 0.2);
+  animation: completedCelebration 1.5s ease-out;
+}
+
+@keyframes runningGlow {
+  0%, 100% { 
+    box-shadow: 
+      0 0 20px rgb(34 197 94 / 0.3),
+      0 8px 32px rgb(34 197 94 / 0.1);
+  }
+  50% { 
+    box-shadow: 
+      0 0 30px rgb(34 197 94 / 0.5),
+      0 12px 48px rgb(34 197 94 / 0.2);
+  }
+}
+
+@keyframes pausedPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes completedCelebration {
+  0% { 
+    transform: scale(1);
+    box-shadow: 
+      0 0 30px rgb(168 85 247 / 0.4),
+      0 12px 48px rgb(168 85 247 / 0.2);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 
+      0 0 50px rgb(168 85 247 / 0.6),
+      0 20px 60px rgb(168 85 247 / 0.3);
+  }
+  100% { 
+    transform: scale(1);
+    box-shadow: 
+      0 0 30px rgb(168 85 247 / 0.4),
+      0 12px 48px rgb(168 85 247 / 0.2);
+  }
 }
 
 /* 模式顯示 */
@@ -311,16 +359,31 @@ function formatDuration(milliseconds: number): string {
 }
 
 .circle-progress {
-  transition: stroke-dashoffset 0.5s ease;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 8px currentColor);
 }
 
 .circle-progress.pulsing {
-  animation: pulse 2s ease-in-out infinite;
+  animation: circleProgress 3s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+@keyframes circleProgress {
+  0%, 100% { 
+    opacity: 1;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+  25% { 
+    opacity: 0.8;
+    filter: drop-shadow(0 0 12px currentColor);
+  }
+  50% { 
+    opacity: 0.6;
+    filter: drop-shadow(0 0 16px currentColor);
+  }
+  75% { 
+    opacity: 0.8;
+    filter: drop-shadow(0 0 12px currentColor);
+  }
 }
 
 /* 時間顯示 */

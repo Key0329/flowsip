@@ -13,9 +13,11 @@ import type {
   UserSettings, 
   FallbackAlertSettings, 
   TimerMode,
-  ActivityRecord
+  ActivityRecord,
+  SoundType
 } from '~/types/index'
 import { useStorage } from '~/composables/useStorage'
+import { useSounds } from '~/composables/useSounds'
 
 /**
  * 通知 API 介面
@@ -34,10 +36,10 @@ export interface NotificationAPI {
   sendTimerCompleteNotification(mode: TimerMode, record: ActivityRecord): Promise<void>
   
   /** 播放提醒音效 */
-  playAlertSound(soundType?: string, volume?: number): Promise<void>
+  playAlertSound(soundType?: SoundType, volume?: number): Promise<void>
   
   /** 停止播放音效 */
-  stopAlertSound(): Promise<void>
+  stopAlertSound(soundType?: SoundType): Promise<void>
   
   /** 顯示視覺提醒 */
   showVisualAlert(message: string, mode: TimerMode): Promise<void>
@@ -128,6 +130,7 @@ const DEFAULT_FALLBACK_SETTINGS: FallbackAlertSettings = {
  */
 export function useNotifications(): UseNotificationsReturn {
   const storage = useStorage()
+  const sounds = useSounds()
   
   // 通知狀態
   const state = reactive<NotificationState>({
@@ -317,7 +320,9 @@ export function useNotifications(): UseNotificationsReturn {
     
     // 音效提醒
     if (state.fallbackSettings.soundAlertsEnabled) {
-      promises.push(playAlertSound(state.fallbackSettings.alertSoundType, 0.8))
+      // 根據模式選擇適當的音效
+      const soundType: SoundType = mode === 'water' ? 'water-reminder' : 'pomodoro-complete'
+      promises.push(playAlertSound(soundType, 0.8))
     }
     
     // 分頁標題提醒
@@ -331,35 +336,33 @@ export function useNotifications(): UseNotificationsReturn {
   /**
    * 播放提醒音效
    */
-  async function playAlertSound(soundType: string = 'chime', volume: number = 0.5): Promise<void> {
+  async function playAlertSound(soundType: SoundType = 'notification-pop', volume: number = 0.5): Promise<void> {
+    if (!state.fallbackSettings.soundAlertsEnabled) {
+      return
+    }
+    
     try {
-      const soundPath = `/sounds/${soundType}.mp3`
-      
-      // 使用快取的音效檔案
-      let audio = audioCache.get(soundPath)
-      if (!audio) {
-        audio = new Audio(soundPath)
-        audio.preload = 'auto'
-        audioCache.set(soundPath, audio)
-      }
-      
-      audio.volume = Math.max(0, Math.min(1, volume))
-      audio.currentTime = 0
-      
       state.isPlayingSound = true
       
-      await audio.play()
+      // 使用 useSounds 播放音效
+      const success = await sounds.playSound(soundType, volume, {
+        loop: state.fallbackSettings.repeatSound
+      })
       
-      // 如果設定重複播放
-      if (state.fallbackSettings.repeatSound) {
-        audio.loop = true
-      } else {
-        audio.addEventListener('ended', () => {
-          state.isPlayingSound = false
-        }, { once: true })
+      if (!success) {
+        // 如果播放失敗，嘗試播放備用音效
+        await sounds.playSound('notification-pop', volume)
       }
       
-    } catch {
+      // 如果不是重複播放，設定結束回調
+      if (!state.fallbackSettings.repeatSound) {
+        setTimeout(() => {
+          state.isPlayingSound = false
+        }, 3000) // 3秒後停止狀態
+      }
+      
+    } catch (error) {
+      console.error('播放提醒音效失敗:', error)
       state.isPlayingSound = false
     }
   }
@@ -367,13 +370,21 @@ export function useNotifications(): UseNotificationsReturn {
   /**
    * 停止播放音效
    */
-  async function stopAlertSound(): Promise<void> {
-    audioCache.forEach((audio) => {
-      audio.pause()
-      audio.currentTime = 0
-      audio.loop = false
-    })
-    state.isPlayingSound = false
+  async function stopAlertSound(soundType?: SoundType): Promise<void> {
+    try {
+      if (soundType) {
+        // 停止特定音效
+        sounds.stopSound(soundType)
+      } else {
+        // 停止所有音效
+        sounds.stopAllSounds()
+      }
+      
+      state.isPlayingSound = false
+    } catch (error) {
+      console.error('停止提醒音效失敗:', error)
+      state.isPlayingSound = false
+    }
   }
   
   /**

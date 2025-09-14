@@ -29,19 +29,19 @@
         <div class="theme-preview" :class="`theme-preview--${option.value}`">
           <div class="preview-header">
             <div class="preview-circles">
-              <div class="preview-circle preview-circle--red"></div>
-              <div class="preview-circle preview-circle--yellow"></div>
-              <div class="preview-circle preview-circle--green"></div>
+              <div class="preview-circle preview-circle--red"/>
+              <div class="preview-circle preview-circle--yellow"/>
+              <div class="preview-circle preview-circle--green"/>
             </div>
           </div>
           <div class="preview-content">
-            <div class="preview-sidebar"></div>
+            <div class="preview-sidebar"/>
             <div class="preview-main">
-              <div class="preview-bar"></div>
+              <div class="preview-bar"/>
               <div class="preview-text">
-                <div class="preview-line preview-line--long"></div>
-                <div class="preview-line preview-line--medium"></div>
-                <div class="preview-line preview-line--short"></div>
+                <div class="preview-line preview-line--long"/>
+                <div class="preview-line preview-line--medium"/>
+                <div class="preview-line preview-line--short"/>
               </div>
             </div>
           </div>
@@ -126,8 +126,8 @@
     <div class="reset-section">
       <button
         class="reset-button"
-        @click="resetToDefault"
         :disabled="isLoading"
+        @click="resetToDefault"
       >
         <Icon name="mdi:restore" />
         <span>重置為預設</span>
@@ -227,7 +227,7 @@ function resetToDefault(): void {
 
 // 偵測系統主題
 function detectSystemTheme(): void {
-  if (process.client && window.matchMedia) {
+  if (import.meta.client && window.matchMedia) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     systemTheme.value = mediaQuery.matches ? 'dark' : 'light'
   }
@@ -235,7 +235,7 @@ function detectSystemTheme(): void {
 
 // 應用無障礙設定
 function applyAccessibilitySettings(): void {
-  if (!process.client) return
+  if (!import.meta.client) return
   
   const root = document.documentElement
   
@@ -253,7 +253,7 @@ onMounted(() => {
   detectSystemTheme()
   applyAccessibilitySettings()
   
-  if (process.client && window.matchMedia) {
+  if (import.meta.client && window.matchMedia) {
     mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const handleChange = (e: MediaQueryListEvent) => {
       systemTheme.value = e.matches ? 'dark' : 'light'

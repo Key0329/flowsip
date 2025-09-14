@@ -192,7 +192,7 @@ export function useSettings(): UseSettingsReturn {
   }
 
   function applyTheme(themeMode: ThemeMode): void {
-    if (process.client) {
+    if (import.meta.client) {
       const root = document.documentElement
       
       if (themeMode === 'auto') {
@@ -331,7 +331,7 @@ export function useSettings(): UseSettingsReturn {
 
   // 設定管理
   async function loadSettings(): Promise<void> {
-    if (!process.client) return
+    if (!import.meta.client) return
 
     try {
       isLoading.value = true
@@ -370,7 +370,7 @@ export function useSettings(): UseSettingsReturn {
   }
 
   async function saveSettings(): Promise<void> {
-    if (!process.client) return
+    if (!import.meta.client) return
 
     try {
       isLoading.value = true
@@ -466,7 +466,7 @@ export function useSettings(): UseSettingsReturn {
   }
 
   // 監聽系統主題變化
-  if (process.client) {
+  if (import.meta.client) {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const handleThemeChange = () => {
       if (settings.value.theme === 'auto') {
@@ -542,7 +542,7 @@ export function useSettings(): UseSettingsReturn {
 }
 
 // 全域設定載入
-if (process.client) {
+if (import.meta.client) {
   const { loadSettings } = useSettings()
   loadSettings().catch(console.error)
 }

@@ -64,7 +64,7 @@
                   <span>匯入設定</span>
                 </button>
                 
-                <div class="menu-divider"></div>
+                <div class="menu-divider"/>
                 
                 <button
                   class="menu-item menu-item--danger"
@@ -435,7 +435,7 @@
             class="import-textarea"
             placeholder="貼上設定資料..."
             rows="10"
-          ></textarea>
+          />
         </div>
         
         <div class="dialog-actions">

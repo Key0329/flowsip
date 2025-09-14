@@ -1,0 +1,416 @@
+/* FlowSip 深色主題樣式
+ * 為深色模式提供專門優化的色彩變數和樣式
+ * 包含護眼配色、適當對比度和視覺層次
+ */
+
+/* ==========================================================================
+   深色主題根變數 (Dark Theme Root Variables)
+   ========================================================================== */
+
+.dark {
+  /* 背景色彩層次 */
+  --color-background: var(--color-neutral-900);
+  --color-background-secondary: var(--color-neutral-800);
+  --color-background-tertiary: var(--color-neutral-700);
+  --color-background-quaternary: var(--color-neutral-600);
+  
+  /* 前景文字色彩 */
+  --color-foreground: var(--color-neutral-50);
+  --color-foreground-secondary: var(--color-neutral-300);
+  --color-foreground-tertiary: var(--color-neutral-400);
+  --color-foreground-muted: var(--color-neutral-500);
+
+  /* 邊框色彩 */
+  --color-border: var(--color-neutral-700);
+  --color-border-secondary: var(--color-neutral-600);
+  --color-border-focus: var(--color-water-400);
+  --color-border-hover: var(--color-neutral-500);
+
+  /* 陰影色彩 */
+  --color-shadow: 0, 0, 0;
+  --color-shadow-light: var(--color-neutral-800);
+  --color-shadow-medium: var(--color-neutral-900);
+
+  /* 主要品牌色彩調整 */
+  --color-primary: var(--color-water-400);
+  --color-primary-foreground: var(--color-neutral-900);
+  --color-primary-light: var(--color-water-800);
+  --color-primary-dark: var(--color-water-300);
+
+  /* 次要品牌色彩調整 */
+  --color-secondary: var(--color-neutral-400);
+  --color-secondary-foreground: var(--color-neutral-900);
+  --color-secondary-light: var(--color-neutral-700);
+  --color-secondary-dark: var(--color-neutral-200);
+
+  /* 狀態色彩調整（深色模式優化） */
+  --color-success-500: 34, 197, 94;    /* 稍微調亮的綠色 */
+  --color-warning-500: 251, 191, 36;   /* 調亮的黃色 */
+  --color-error-500: 248, 113, 113;    /* 調亮的紅色 */
+  --color-info-500: var(--color-water-400);
+
+  /* 計時器專用色彩 */
+  --color-timer-water: var(--color-water-400);
+  --color-timer-pomodoro: var(--color-pomodoro-400);
+  --color-timer-break: var(--color-focus-400);
+  --color-timer-complete: var(--color-success-500);
+
+  /* 卡片和表面色彩 */
+  --color-card: var(--color-neutral-800);
+  --color-card-hover: var(--color-neutral-750);
+  --color-surface: var(--color-neutral-850);
+  --color-surface-hover: var(--color-neutral-750);
+
+  /* 輸入控制項色彩 */
+  --color-input-background: var(--color-neutral-800);
+  --color-input-border: var(--color-neutral-600);
+  --color-input-focus: var(--color-water-400);
+  --color-placeholder: var(--color-neutral-500);
+
+  /* 導航和選單色彩 */
+  --color-nav-background: var(--color-neutral-900);
+  --color-nav-item: var(--color-neutral-300);
+  --color-nav-item-hover: var(--color-neutral-100);
+  --color-nav-item-active: var(--color-water-400);
+}
+
+/* ==========================================================================
+   深色模式漸變色彩 (Dark Mode Gradients)
+   ========================================================================== */
+
+.dark {
+  /* 主要漸變 */
+  --gradient-primary: linear-gradient(135deg, 
+    rgb(var(--color-water-400)), 
+    rgb(var(--color-water-600))
+  );
+  
+  --gradient-secondary: linear-gradient(135deg, 
+    rgb(var(--color-neutral-700)), 
+    rgb(var(--color-neutral-900))
+  );
+
+  /* 背景漸變 */
+  --gradient-background: linear-gradient(135deg, 
+    rgb(var(--color-neutral-900)), 
+    rgb(var(--color-neutral-800))
+  );
+
+  /* 卡片漸變 */
+  --gradient-card: linear-gradient(135deg, 
+    rgb(var(--color-neutral-800) / 0.8), 
+    rgb(var(--color-neutral-700) / 0.6)
+  );
+
+  /* 計時器漸變 */
+  --gradient-timer: linear-gradient(135deg, 
+    rgb(var(--color-water-500) / 0.1), 
+    rgb(var(--color-water-700) / 0.05)
+  );
+
+  /* 成功狀態漸變 */
+  --gradient-success: linear-gradient(135deg, 
+    rgb(34, 197, 94), 
+    rgb(22, 163, 74)
+  );
+}
+
+/* ==========================================================================
+   深色模式陰影系統 (Dark Mode Shadows)
+   ========================================================================== */
+
+.dark {
+  /* 基礎陰影 */
+  --shadow-sm: 0 1px 2px 0 rgb(var(--color-shadow) / 0.3);
+  --shadow-base: 0 1px 3px 0 rgb(var(--color-shadow) / 0.4), 0 1px 2px -1px rgb(var(--color-shadow) / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(var(--color-shadow) / 0.4), 0 2px 4px -2px rgb(var(--color-shadow) / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(var(--color-shadow) / 0.4), 0 4px 6px -4px rgb(var(--color-shadow) / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(var(--color-shadow) / 0.4), 0 8px 10px -6px rgb(var(--color-shadow) / 0.4);
+
+  /* 發光陰影 */
+  --shadow-glow-primary: 0 0 20px rgb(var(--color-water-400) / 0.3);
+  --shadow-glow-success: 0 0 20px rgb(34, 197, 94, 0.3);
+  --shadow-glow-warning: 0 0 20px rgb(251, 191, 36, 0.3);
+  --shadow-glow-error: 0 0 20px rgb(248, 113, 113, 0.3);
+
+  /* 內陰影 */
+  --shadow-inner: inset 0 2px 4px 0 rgb(var(--color-shadow) / 0.2);
+  --shadow-inner-lg: inset 0 4px 8px 0 rgb(var(--color-shadow) / 0.2);
+}
+
+/* ==========================================================================
+   深色模式元件樣式 (Dark Mode Component Styles)
+   ========================================================================== */
+
+/* 按鈕樣式調整 */
+.dark .btn-primary {
+  background: rgb(var(--color-water-500));
+  color: rgb(var(--color-neutral-900));
+  border-color: rgb(var(--color-water-500));
+}
+
+.dark .btn-primary:hover {
+  background: rgb(var(--color-water-400));
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.dark .btn-secondary {
+  background: rgb(var(--color-neutral-700));
+  color: rgb(var(--color-neutral-100));
+  border-color: rgb(var(--color-neutral-600));
+}
+
+.dark .btn-secondary:hover {
+  background: rgb(var(--color-neutral-600));
+  color: rgb(var(--color-neutral-50));
+}
+
+/* 卡片樣式調整 */
+.dark .card {
+  background: rgb(var(--color-card));
+  border-color: rgb(var(--color-border));
+  box-shadow: var(--shadow-md);
+}
+
+.dark .card:hover {
+  background: rgb(var(--color-card-hover));
+  box-shadow: var(--shadow-lg);
+}
+
+/* 輸入框樣式調整 */
+.dark input,
+.dark textarea,
+.dark select {
+  background: rgb(var(--color-input-background));
+  border-color: rgb(var(--color-input-border));
+  color: rgb(var(--color-foreground));
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: rgb(var(--color-input-focus));
+  box-shadow: 0 0 0 3px rgb(var(--color-input-focus) / 0.1);
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgb(var(--color-placeholder));
+}
+
+/* 導航樣式調整 */
+.dark .nav-item {
+  color: rgb(var(--color-nav-item));
+}
+
+.dark .nav-item:hover {
+  color: rgb(var(--color-nav-item-hover));
+  background: rgb(var(--color-neutral-800) / 0.5);
+}
+
+.dark .nav-item.active {
+  color: rgb(var(--color-nav-item-active));
+  background: rgb(var(--color-water-500) / 0.1);
+}
+
+/* ==========================================================================
+   深色模式計時器特殊樣式
+   ========================================================================== */
+
+.dark .timer-display {
+  background: var(--gradient-timer);
+  border-color: rgb(var(--color-border));
+  backdrop-filter: blur(20px);
+}
+
+.dark .timer-display--running {
+  box-shadow: var(--shadow-glow-success);
+  border-color: rgb(34, 197, 94, 0.5);
+}
+
+.dark .timer-display--paused {
+  box-shadow: var(--shadow-glow-warning);
+  border-color: rgb(251, 191, 36, 0.5);
+}
+
+.dark .timer-display--completed {
+  box-shadow: var(--shadow-glow-primary);
+  border-color: rgb(var(--color-water-400) / 0.5);
+}
+
+/* 進度環調整 */
+.dark .circle-progress {
+  stroke: rgb(var(--color-water-400));
+  filter: drop-shadow(0 0 8px rgb(var(--color-water-400) / 0.5));
+}
+
+.dark .circle-bg {
+  stroke: rgb(var(--color-neutral-600));
+}
+
+/* ==========================================================================
+   深色模式統計圖表樣式
+   ========================================================================== */
+
+.dark .chart-container {
+  background: rgb(var(--color-card));
+  border-color: rgb(var(--color-border));
+}
+
+.dark .stats-card {
+  background: var(--gradient-card);
+  border-color: rgb(var(--color-border));
+  backdrop-filter: blur(10px);
+}
+
+.dark .stats-value {
+  color: rgb(var(--color-water-400));
+}
+
+.dark .stats-label {
+  color: rgb(var(--color-foreground-secondary));
+}
+
+/* ==========================================================================
+   深色模式設定介面樣式
+   ========================================================================== */
+
+.dark .settings-section {
+  background: rgb(var(--color-card));
+  border-color: rgb(var(--color-border));
+}
+
+.dark .settings-item {
+  border-color: rgb(var(--color-border));
+}
+
+.dark .settings-label {
+  color: rgb(var(--color-foreground));
+}
+
+.dark .settings-description {
+  color: rgb(var(--color-foreground-secondary));
+}
+
+/* 切換開關樣式 */
+.dark .toggle-switch {
+  background: rgb(var(--color-neutral-600));
+}
+
+.dark .toggle-switch.active {
+  background: rgb(var(--color-water-500));
+}
+
+.dark .toggle-switch .toggle-thumb {
+  background: rgb(var(--color-neutral-100));
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   深色模式音效設定樣式
+   ========================================================================== */
+
+.dark .sound-item {
+  background: rgb(var(--color-card));
+  border-color: rgb(var(--color-border));
+}
+
+.dark .sound-item--playing {
+  background: rgb(var(--color-success-500) / 0.1);
+  border-color: rgb(34, 197, 94, 0.3);
+  box-shadow: var(--shadow-glow-success);
+}
+
+.dark .volume-slider {
+  background: rgb(var(--color-neutral-600));
+}
+
+.dark .volume-slider::-webkit-slider-thumb {
+  background: rgb(var(--color-water-400));
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   深色模式載入動畫樣式
+   ========================================================================== */
+
+.dark .loading-spinner {
+  color: rgb(var(--color-water-400));
+}
+
+.dark .loading-overlay {
+  background: rgb(var(--color-neutral-900) / 0.8);
+  backdrop-filter: blur(8px);
+}
+
+/* ==========================================================================
+   深色模式響應式調整
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .dark .card {
+    background: rgb(var(--color-background-secondary));
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .dark .timer-display {
+    background: rgb(var(--color-background-secondary) / 0.8);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* ==========================================================================
+   深色模式無障礙增強
+   ========================================================================== */
+
+/* 高對比度模式下的深色主題 */
+@media (prefers-contrast: high) {
+  .dark.high-contrast {
+    --color-background: 0, 0, 0;
+    --color-foreground: 255, 255, 255;
+    --color-border: 255, 255, 255;
+    --color-primary: var(--color-water-300);
+  }
+  
+  .dark.high-contrast .card {
+    border-width: 2px;
+  }
+  
+  .dark.high-contrast .btn-primary {
+    border-width: 2px;
+    font-weight: 700;
+  }
+}
+
+/* 減少動畫偏好用戶的深色主題調整 */
+@media (prefers-reduced-motion: reduce) {
+  .dark .timer-display,
+  .dark .card,
+  .dark .btn-primary {
+    transition: none;
+  }
+  
+  .dark *[class*="animate-"],
+  .dark *[class*="transition-"] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   深色模式列印樣式優化
+   ========================================================================== */
+
+@media print {
+  .dark {
+    --color-background: 255, 255, 255;
+    --color-foreground: 0, 0, 0;
+    --color-border: 0, 0, 0;
+  }
+  
+  .dark * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}

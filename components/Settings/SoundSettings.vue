@@ -103,8 +103,8 @@
             <div class="sound-selector">
               <select
                 :value="sounds.sounds[soundType as keyof typeof sounds.sounds]"
-                @change="updateSoundFile(soundType as keyof typeof sounds.sounds, $event)"
                 class="sound-select"
+                @change="updateSoundFile(soundType as keyof typeof sounds.sounds, $event)"
               >
                 <option
                   v-for="option in soundConfig.options"
@@ -201,8 +201,8 @@
     <div class="reset-section">
       <button
         class="reset-button"
-        @click="resetSoundSettings"
         :disabled="isLoading"
+        @click="resetSoundSettings"
       >
         <Icon name="mdi:restore" />
         <span>重置音效設定</span>

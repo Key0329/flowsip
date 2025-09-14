@@ -1,25 +1,63 @@
-# FlowSip 音效檔案
+# FlowSip 音效資源
 
-## 音效檔案需求
+這個目錄包含 FlowSip PWA 的所有音效檔案，支援多種主題和格式。
 
-### 1. 喝水提醒音效 (`water-notification.mp3`)
+## 音效檔案結構
+
+```
+sounds/
+├── README.md                    # 音效說明文件
+├── water-drop.mp3              # 喝水提醒音效 (主要格式)
+├── water-drop.ogg              # 喝水提醒音效 (備用格式)
+├── bell-chime.mp3              # 番茄鐘完成音效
+├── bell-chime.ogg              # 番茄鐘完成音效 (備用格式)
+├── nature-bell.mp3             # 休息時間音效
+├── nature-bell.ogg             # 休息時間音效 (備用格式)
+├── click.mp3                   # 按鈕點擊音效
+├── click.ogg                   # 按鈕點擊音效 (備用格式)
+├── pop.mp3                     # 通知音效
+├── pop.ogg                     # 通知音效 (備用格式)
+├── tick.mp3                    # 計時器滴答音效
+├── tick.ogg                    # 計時器滴答音效 (備用格式)
+├── success.mp3                 # 成功提示音效
+├── success.ogg                 # 成功提示音效 (備用格式)
+├── error.mp3                   # 錯誤提示音效
+├── error.ogg                   # 錯誤提示音效 (備用格式)
+└── themes/                     # 音效主題目錄
+    ├── nature/                 # 自然主題
+    │   ├── water-stream.mp3    # 自然水流聲
+    │   ├── bird-chirp.mp3      # 鳥鳴聲
+    │   └── forest-bell.mp3     # 森林鈴聲
+    ├── electronic/             # 電子主題
+    │   ├── synth-drop.mp3      # 合成器水滴音
+    │   ├── digital-chime.mp3   # 數位鈴聲
+    │   └── tech-beep.mp3       # 科技嗶聲
+    └── minimal/                # 簡約主題
+        ├── soft-ping.mp3       # 柔和提示音
+        ├── gentle-tone.mp3     # 溫和鈴聲
+        └── quiet-bell.mp3      # 安靜鈴聲
+```
+
+## 音效類型說明
+
+### 1. 喝水提醒音效 (`water-drop.mp3/.ogg`)
 - **時長**: 1-2 秒
 - **音調**: 柔和、舒緩
-- **建議音效**: 水滴聲、輕鈴聲、柔和嗶聲
+- **音效**: 清脆的水滴聲
 - **音量**: 適中，不刺耳
 - **用途**: 30分鐘喝水計時完成時播放
 
-### 2. 番茄鐘提醒音效 (`pomodoro-notification.mp3`)
+### 2. 番茄鐘完成音效 (`bell-chime.mp3/.ogg`)
 - **時長**: 2-3 秒
 - **音調**: 溫和但明確
-- **建議音效**: 輕鈴聲、鐘聲、柔和警告音
+- **音效**: 輕鈴聲、鐘聲
 - **音量**: 略高於喝水提醒，但不刺耳
 - **用途**: 25分鐘番茄鐘計時完成時播放
 
-### 3. 按鈕點擊音效 (`button-click.mp3`)
+### 3. 按鈕點擊音效 (`click.mp3/.ogg`)
 - **時長**: 0.2-0.5 秒
 - **音調**: 簡潔、清脆
-- **建議音效**: 按鈕點擊聲、輕敲聲
+- **音效**: 按鈕點擊聲
 - **音量**: 較低，用於回饋
 - **用途**: 按鈕點擊、操作確認
 

@@ -1,7 +1,7 @@
 /**
  * FlowSip MVP 基礎型別定義
  * 
- * 包含 TimerState, UserSettings, ActivityRecord 等核心資料結構
+ * 包含 TimerState, UserSettings, ActivityRecord, SoundConfig 等核心資料結構
  * 遵循正體中文註解規範和 MVP 精簡原則
  */
 
@@ -670,3 +670,59 @@ export const STORAGE_KEYS = {
   WEEKLY_STATS: 'flowsip-weekly-stats',
   TIMER_STATE: 'flowsip-timer-state'
 } as const
+
+// =============================================================================
+// 音效相關型別
+// =============================================================================
+
+/**
+ * 音效類型
+ */
+export type SoundType = 
+  | 'water-reminder'
+  | 'pomodoro-complete'
+  | 'break-start'
+  | 'button-click'
+  | 'notification-pop'
+  | 'timer-tick'
+  | 'success-chime'
+  | 'error-beep'
+
+/**
+ * 音效配置介面
+ */
+export interface SoundConfig {
+  /** 音效檔案路徑 */
+  file: string
+  
+  /** 備用格式檔案路徑 */
+  fallback?: string
+  
+  /** 音效持續時間（毫秒） */
+  duration: number
+  
+  /** 音效描述 */
+  description: string
+  
+  /** 音效標籤 */
+  tags?: string[]
+}
+
+/**
+ * 音效載入結果
+ */
+export interface SoundPreloadResult {
+  /** 音效類型 */
+  type: SoundType
+  
+  /** 載入成功 */
+  success: boolean
+  
+  /** 錯誤訊息 */
+  error?: string
+}
+
+/**
+ * 音效載入狀態
+ */
+export type SoundLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error'

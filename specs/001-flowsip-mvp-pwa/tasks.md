@@ -230,24 +230,24 @@ Task: "useTimer composable 在 composables/useTimer.ts"
 
 ### UI 視覺優化
 
-- [ ] **T036** [P] 色彩系統擴充 (`assets/styles/colors.css` - 完整色彩變數系統)
+- [x] **T036** [P] 色彩系統擴充 (`assets/styles/colors.css` - 完整色彩變數系統) ✅
 - [x] **T037** [P] 排版系統優化 (`assets/styles/typography.css` - 字型大小、行高系統) ✅
 - [x] **T038** [P] 間距系統標準化 (`assets/styles/spacing.css` - 統一間距變數) ✅
 - [x] **T039** 全域樣式整合 (`assets/styles/global.css` - 整合所有樣式系統) ✅
 
 ### 動畫與互動
 
-- [ ] **T040** [P] 計時器動畫優化 (更新 `components/Timer/Display.vue` - 流暢進度動畫)
-- [ ] **T041** [P] 頁面轉場動畫 (`assets/styles/transitions.css` - 頁面切換效果)
-- [ ] **T042** [P] 按鈕互動效果 (更新 `components/Timer/Controls.vue` - hover/click 動畫)
-- [ ] **T043** [P] 載入狀態動畫 (`components/Common/LoadingSpinner.vue` - 優雅載入效果)
+- [x] **T040** [P] 計時器動畫優化 (更新 `components/Timer/Display.vue` - 流暢進度動畫) ✅
+- [x] **T041** [P] 頁面轉場動畫 (`assets/styles/transitions.css` - 頁面切換效果) ✅
+- [x] **T042** [P] 按鈕互動效果 (更新 `components/Timer/Controls.vue` - hover/click 動畫) ✅
+- [x] **T043** [P] 載入狀態動畫 (`components/Common/LoadingSpinner.vue` - 優雅載入效果) ✅
 
 ### 音效系統
 
-- [ ] **T044** [P] 音效管理 composable (`composables/useSounds.ts` - 音效播放和管理)
-- [ ] **T045** [P] 多種提醒音效 (新增 `public/sounds/` - 水滴、鈴聲、自然音效)
-- [ ] **T046** [P] 音效測試元件 (`components/Settings/SoundPreview.vue` - 音效試聽)
-- [ ] **T047** 音效系統整合 (更新通知系統支援多音效選擇)
+- [x] **T044** [P] 音效管理 composable (`composables/useSounds.ts` - 音效播放和管理) ✅
+- [x] **T045** [P] 多種提醒音效 (新增 `public/sounds/` - 水滴、鈴聲、自然音效) ✅
+- [x] **T046** [P] 音效測試元件 (`components/Settings/SoundPreview.vue` - 音效試聽) ✅
+- [x] **T047** 音效系統整合 (更新通知系統支援多音效選擇) ✅
 
 ## Phase 4.3: 主題與個人化
 

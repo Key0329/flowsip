@@ -359,19 +359,51 @@ function handleAdjustTime(adjustment: number): void {
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: rgb(255 255 255 / 0.1);
   color: white;
   border: 1px solid rgb(255 255 255 / 0.2);
+  transform-origin: center;
+  backdrop-filter: blur(10px);
 }
 
+/* 按鈕懸停效果 */
 .control-btn:hover:not(.control-btn--disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 8px 25px rgb(0 0 0 / 0.15),
+    0 0 0 1px rgb(255 255 255 / 0.1);
+  filter: brightness(1.1);
 }
 
+/* 按鈕點擊效果 */
 .control-btn:active:not(.control-btn--disabled) {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.1s;
+  box-shadow: 
+    0 2px 8px rgb(0 0 0 / 0.2),
+    inset 0 2px 4px rgb(0 0 0 / 0.1);
+}
+
+/* 波紋效果 */
+.control-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.control-btn:active:not(.control-btn--disabled)::before {
+  width: 300px;
+  height: 300px;
 }
 
 /* 按鈕尺寸變體 */
@@ -392,47 +424,76 @@ function handleAdjustTime(adjustment: number): void {
 
 /* 按鈕變體 */
 .control-btn--primary {
-  background: rgb(34 197 94);
+  background: linear-gradient(135deg, rgb(34 197 94), rgb(22 163 74));
   border-color: rgb(34 197 94);
   color: white;
+  box-shadow: 0 0 0 0 rgb(34 197 94 / 0.3);
 }
 
 .control-btn--primary:hover:not(.control-btn--disabled) {
-  background: rgb(22 163 74);
-  box-shadow: 0 4px 12px rgb(34 197 94 / 0.3);
+  background: linear-gradient(135deg, rgb(22 163 74), rgb(21 128 61));
+  box-shadow: 
+    0 8px 25px rgb(34 197 94 / 0.3),
+    0 0 20px rgb(34 197 94 / 0.2);
+  border-color: rgb(22 163 74);
+}
+
+.control-btn--primary:active:not(.control-btn--disabled) {
+  background: linear-gradient(135deg, rgb(21 128 61), rgb(20 83 45));
 }
 
 .control-btn--warning {
-  background: rgb(234 179 8);
+  background: linear-gradient(135deg, rgb(234 179 8), rgb(202 138 4));
   border-color: rgb(234 179 8);
   color: rgb(31 41 55);
 }
 
 .control-btn--warning:hover:not(.control-btn--disabled) {
-  background: rgb(202 138 4);
-  box-shadow: 0 4px 12px rgb(234 179 8 / 0.3);
+  background: linear-gradient(135deg, rgb(202 138 4), rgb(180 83 9));
+  box-shadow: 
+    0 8px 25px rgb(234 179 8 / 0.3),
+    0 0 20px rgb(234 179 8 / 0.2);
+  border-color: rgb(202 138 4);
+}
+
+.control-btn--warning:active:not(.control-btn--disabled) {
+  background: linear-gradient(135deg, rgb(180 83 9), rgb(146 64 14));
 }
 
 .control-btn--danger {
-  background: rgb(239 68 68);
+  background: linear-gradient(135deg, rgb(239 68 68), rgb(220 38 38));
   border-color: rgb(239 68 68);
   color: white;
 }
 
 .control-btn--danger:hover:not(.control-btn--disabled) {
-  background: rgb(220 38 38);
-  box-shadow: 0 4px 12px rgb(239 68 68 / 0.3);
+  background: linear-gradient(135deg, rgb(220 38 38), rgb(185 28 28));
+  box-shadow: 
+    0 8px 25px rgb(239 68 68 / 0.3),
+    0 0 20px rgb(239 68 68 / 0.2);
+  border-color: rgb(220 38 38);
+}
+
+.control-btn--danger:active:not(.control-btn--disabled) {
+  background: linear-gradient(135deg, rgb(185 28 28), rgb(153 27 27));
 }
 
 .control-btn--secondary {
-  background: rgb(107 114 128);
+  background: linear-gradient(135deg, rgb(107 114 128), rgb(75 85 99));
   border-color: rgb(107 114 128);
   color: white;
 }
 
 .control-btn--secondary:hover:not(.control-btn--disabled) {
-  background: rgb(75 85 99);
-  box-shadow: 0 4px 12px rgb(107 114 128 / 0.3);
+  background: linear-gradient(135deg, rgb(75 85 99), rgb(55 65 81));
+  box-shadow: 
+    0 8px 25px rgb(107 114 128 / 0.3),
+    0 0 20px rgb(107 114 128 / 0.2);
+  border-color: rgb(75 85 99);
+}
+
+.control-btn--secondary:active:not(.control-btn--disabled) {
+  background: linear-gradient(135deg, rgb(55 65 81), rgb(31 41 55));
 }
 
 .control-btn--outline {

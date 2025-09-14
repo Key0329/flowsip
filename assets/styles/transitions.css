@@ -1,0 +1,505 @@
+/* FlowSip 轉場動畫系統
+ * 包含頁面轉場、元件動畫和互動效果
+ * 支援響應式動畫和無障礙偏好設定
+ */
+
+/* ==========================================================================
+   頁面轉場動畫 (Page Transitions)
+   ========================================================================== */
+
+/* Nuxt 頁面轉場效果 */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.page-enter-to,
+.page-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 特定頁面轉場效果 */
+.page-slide-left-enter-active,
+.page-slide-left-leave-active {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.page-slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.page-slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.page-slide-right-enter-active,
+.page-slide-right-leave-active {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.page-slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.page-slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* 淡入淡出效果 */
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.page-fade-enter-from,
+.page-fade-leave-to {
+  opacity: 0;
+}
+
+/* 縮放轉場效果 */
+.page-scale-enter-active,
+.page-scale-leave-active {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.page-scale-enter-from,
+.page-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* ==========================================================================
+   元件轉場動畫 (Component Transitions)
+   ========================================================================== */
+
+/* 模態框轉場 */
+.modal-enter-active,
+.modal-leave-active {
+  transition: all 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* 抽屜轉場 */
+.drawer-enter-active,
+.drawer-leave-active {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-enter-from,
+.drawer-leave-to {
+  transform: translateX(-100%);
+}
+
+/* 下拉選單轉場 */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: all 0.2s ease;
+  transform-origin: top center;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: scaleY(0.8);
+}
+
+/* 通知轉場 */
+.notification-enter-active,
+.notification-leave-active {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.notification-enter-from {
+  opacity: 0;
+  transform: translateX(100%) scale(0.8);
+}
+
+.notification-leave-to {
+  opacity: 0;
+  transform: translateX(-100%) scale(0.8);
+}
+
+/* 載入狀態轉場 */
+.loading-enter-active,
+.loading-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.loading-enter-from,
+.loading-leave-to {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   列表動畫 (List Transitions)
+   ========================================================================== */
+
+/* 列表項目動畫 */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.list-leave-active {
+  position: absolute;
+  width: 100%;
+}
+
+.list-move {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+
+/* 交錯動畫 */
+.stagger-enter-active {
+  transition: all 0.4s ease;
+  transition-delay: calc(var(--stagger-delay, 0) * 0.1s);
+}
+
+.stagger-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* ==========================================================================
+   互動式動畫 (Interactive Animations)
+   ========================================================================== */
+
+/* 按鈕點擊動畫 */
+@keyframes buttonPress {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.btn-press {
+  animation: buttonPress 0.15s ease;
+}
+
+/* 波紋效果 */
+@keyframes ripple {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(4);
+  }
+}
+
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.ripple-effect:active::before {
+  width: 300px;
+  height: 300px;
+  opacity: 0.1;
+}
+
+/* 懸停效果 */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.hover-glow {
+  transition: filter 0.3s ease;
+}
+
+.hover-glow:hover {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* 專注狀態動畫 */
+.focus-ring {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.focus-ring:focus-visible {
+  outline: none;
+}
+
+.focus-ring:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 2px solid rgb(var(--color-water-500));
+  border-radius: inherit;
+  animation: focusRing 0.3s ease;
+}
+
+@keyframes focusRing {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   載入動畫 (Loading Animations)
+   ========================================================================== */
+
+/* 旋轉載入動畫 */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* 脈動載入動畫 */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 彈跳載入動畫 */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* 點點載入動畫 */
+@keyframes dots {
+  0%, 20% { color: transparent; }
+  40% { color: currentColor; }
+  100% { color: transparent; }
+}
+
+.loading-dots::after {
+  content: '...';
+  display: inline-block;
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+/* 進度條動畫 */
+@keyframes progressBar {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-indeterminate::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent
+  );
+  animation: progressBar 1.5s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   特效動畫 (Special Effects)
+   ========================================================================== */
+
+/* 閃爍效果 */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* 搖晃效果 */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+  20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.animate-shake {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* 浮動效果 */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 呼吸效果 */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   響應式動畫 (Responsive Animations)
+   ========================================================================== */
+
+/* 行動裝置動畫優化 */
+@media (max-width: 768px) {
+  .page-enter-active,
+  .page-leave-active {
+    transition-duration: 0.25s;
+  }
+  
+  .modal-enter-active,
+  .modal-leave-active {
+    transition-duration: 0.2s;
+  }
+}
+
+/* ==========================================================================
+   無障礙動畫設定 (Accessibility)
+   ========================================================================== */
+
+/* 減少動畫偏好的使用者 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* 保留必要的轉場效果 */
+  .page-enter-active,
+  .page-leave-active,
+  .modal-enter-active,
+  .modal-leave-active {
+    transition: opacity 0.2s ease;
+  }
+  
+  .page-enter-from,
+  .page-leave-to,
+  .modal-enter-from,
+  .modal-leave-to {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+/* 高對比度模式動畫調整 */
+@media (prefers-contrast: high) {
+  .hover-glow:hover {
+    filter: none;
+    background-color: rgb(var(--color-primary) / 0.1);
+  }
+  
+  .focus-ring:focus-visible::after {
+    border-width: 3px;
+    border-color: rgb(var(--color-foreground));
+  }
+}
+
+/* ==========================================================================
+   工具類別 (Utility Classes)
+   ========================================================================== */
+
+/* 動畫延遲 */
+.delay-75 { animation-delay: 75ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-1000 { animation-delay: 1000ms; }
+
+/* 動畫持續時間 */
+.duration-75 { animation-duration: 75ms; }
+.duration-100 { animation-duration: 100ms; }
+.duration-150 { animation-duration: 150ms; }
+.duration-200 { animation-duration: 200ms; }
+.duration-300 { animation-duration: 300ms; }
+.duration-500 { animation-duration: 500ms; }
+.duration-700 { animation-duration: 700ms; }
+.duration-1000 { animation-duration: 1000ms; }
+
+/* 緩動函數 */
+.ease-linear { animation-timing-function: linear; }
+.ease-in { animation-timing-function: cubic-bezier(0.4, 0, 1, 1); }
+.ease-out { animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+.ease-in-out { animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* 變換起點 */
+.origin-center { transform-origin: center; }
+.origin-top { transform-origin: top; }
+.origin-top-right { transform-origin: top right; }
+.origin-right { transform-origin: right; }
+.origin-bottom-right { transform-origin: bottom right; }
+.origin-bottom { transform-origin: bottom; }
+.origin-bottom-left { transform-origin: bottom left; }
+.origin-left { transform-origin: left; }
+.origin-top-left { transform-origin: top left; }
