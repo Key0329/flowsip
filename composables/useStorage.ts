@@ -414,7 +414,14 @@ export function useStorage(engine?: StorageEngine): UseStorageReturn {
         }
         
         const key = getActivityKey(normalizedDate)
-        const records = await storageEngine.get(key) as ActivityRecord[] || []
+        const rawRecords = await storageEngine.get(key) as any[] || []
+        
+        // 重新轉換 Date 物件
+        const records: ActivityRecord[] = rawRecords.map(record => ({
+          ...record,
+          startTime: new Date(record.startTime),
+          endTime: new Date(record.endTime)
+        }))
         
         // 驗證每筆記錄
         const validRecords = records.filter(record => {

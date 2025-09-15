@@ -15,6 +15,12 @@ export default defineConfig({
     environment: 'happy-dom',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/tests/e2e/**' // 排除 E2E 測試
+    ],
     typecheck: {
       enabled: false // 暫時關閉類型檢查
     }

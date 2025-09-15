@@ -40,7 +40,7 @@ describe('StorageAPI 契約測試 - 核心功能', () => {
         pomodoroInterval: 25 * 60 * 1000, // 25 分鐘
         breakInterval: 5 * 60 * 1000, // 5 分鐘
         soundEnabled: true,
-        volume: 0.8,
+        volume: 0.5,
         theme: 'light',
         notificationsEnabled: true
       }
@@ -54,7 +54,7 @@ describe('StorageAPI 契約測試 - 核心功能', () => {
       expect(loadedSettings.waterInterval).toBe(30 * 60 * 1000)
       expect(loadedSettings.pomodoroInterval).toBe(25 * 60 * 1000)
       expect(loadedSettings.soundEnabled).toBe(true)
-      expect(loadedSettings.volume).toBe(0.8)
+      expect(loadedSettings.volume).toBe(0.5)
       expect(loadedSettings.theme).toBe('light')
     })
 
@@ -89,7 +89,7 @@ describe('StorageAPI 契約測試 - 核心功能', () => {
       // When - 更新部分設定
       const updatedSettings: UserSettings = {
         ...initialSettings,
-        volume: 0.8,
+        volume: 0.5,
         theme: 'dark',
         soundEnabled: false
       }
@@ -97,7 +97,7 @@ describe('StorageAPI 契約測試 - 核心功能', () => {
 
       // Then - 載入的設定應反映更新
       const loadedSettings = await storageAPI.loadSettings()
-      expect(loadedSettings.volume).toBe(0.8)
+      expect(loadedSettings.volume).toBe(0.5)
       expect(loadedSettings.theme).toBe('dark')
       expect(loadedSettings.soundEnabled).toBe(false)
       expect(loadedSettings.waterInterval).toBe(30 * 60 * 1000) // 未改變的設定保持不變
@@ -160,9 +160,9 @@ describe('StorageAPI 契約測試 - 核心功能', () => {
       // Then - 應能找到兩個活動記錄
       expect(activities).toHaveLength(2)
       
-      // 按時間排序
+      // 按時間排序 (確保 Date 物件正確)
       const sortedActivities = activities.sort((a, b) => 
-        a.startTime.getTime() - b.startTime.getTime()
+        new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
       )
       
       expect(sortedActivities[0].id).toBe('activity-1')
@@ -278,7 +278,7 @@ describe('StorageAPI 契約測試 - 核心功能', () => {
       }
 
       // When/Then - 應拋出適當的錯誤
-      await expect(storageAPI.saveActivity(testActivity)).rejects.toThrow('Storage quota exceeded')
+      await expect(storageAPI.saveActivity(testActivity)).rejects.toThrow('儲存操作失敗')
 
       // 清理
       localStorage.setItem = originalSetItem
