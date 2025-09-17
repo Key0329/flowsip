@@ -35,8 +35,8 @@
             <button 
               v-if="!isUpdating"
               class="update-btn update-btn--primary"
-              @click="handleUpdate"
               :disabled="isUpdating"
+              @click="handleUpdate"
             >
               {{ updateButtonText }}
             </button>
@@ -53,8 +53,8 @@
           <button 
             v-if="!isPersistent && !isUpdating"
             class="update-notifier-close"
-            @click="handleClose"
             :title="'關閉通知'"
+            @click="handleClose"
           >
             <Icon name="mdi:close" />
           </button>

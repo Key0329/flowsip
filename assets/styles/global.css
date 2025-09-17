@@ -624,17 +624,76 @@ pre code {
   padding-right: var(--spacing-container-sm);
 }
 
+/* 小型手機 (小於 480px) */
+@media (max-width: 479px) {
+  :root {
+    --text-timer-display: 2.5rem;
+    --spacing-page: 0.75rem;
+  }
+  
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  /* 優化小螢幕上的按鈕間距 */
+  .timer-controls .main-controls {
+    gap: 0.5rem;
+  }
+  
+  /* 減少統計卡片的內間距 */
+  .stats-card {
+    padding: 1rem;
+  }
+}
+
+/* 平板 (768px+) */
 @media (min-width: 768px) {
+  :root {
+    --text-timer-display: 4rem;
+    --spacing-page: 2rem;
+  }
+  
   .container {
     padding-left: var(--spacing-container-md);
     padding-right: var(--spacing-container-md);
   }
+  
+  /* 平板橫向佈局優化 */
+  .timer-section {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }
 
+/* 桌機 (1024px+) */
 @media (min-width: 1024px) {
+  :root {
+    --text-timer-display: 5rem;
+    --spacing-page: 3rem;
+  }
+  
   .container {
     padding-left: var(--spacing-container-lg);
     padding-right: var(--spacing-container-lg);
+  }
+  
+  /* 桌機版佈局優化 */
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .settings-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* 大螢幕 (1440px+) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
   }
 }
 

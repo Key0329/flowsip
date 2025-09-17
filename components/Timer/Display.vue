@@ -1,8 +1,8 @@
 <template>
-  <div class="timer-display" :class="displayClasses">
+  <div class="timer-display" :class="displayClasses" role="timer" :aria-label="`${modeText}計時器：${formattedTime}`">
     <!-- 模式顯示 -->
     <div class="timer-mode">
-      <div class="mode-icon">
+      <div class="mode-icon" aria-hidden="true">
         <Icon v-if="mode === 'water'" name="mdi:water" />
         <Icon v-else-if="mode === 'pomodoro'" name="mdi:timer" />
         <Icon v-else name="mdi:timer-outline" />
@@ -43,10 +43,15 @@
       
       <!-- 時間顯示 -->
       <div class="time-display">
-        <div class="time-main" :class="{ 'time-pulsing': isRunning && remaining <= 60000 }">
+        <div 
+          class="time-main" 
+          :class="{ 'time-pulsing': isRunning && remaining <= 60000 }"
+          aria-live="polite"
+          :aria-atomic="false"
+        >
           {{ formattedTime }}
         </div>
-        <div class="time-sub">
+        <div class="time-sub" aria-live="polite">
           <span v-if="isRunning">{{ statusText }}</span>
           <span v-else-if="remaining === 0 && duration > 0">已完成</span>
           <span v-else>準備開始</span>

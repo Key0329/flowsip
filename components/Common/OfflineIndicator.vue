@@ -3,11 +3,11 @@
     <div 
       v-if="showIndicator" 
       class="offline-indicator"
-      :class=[
+      :class="[
         `offline-indicator--${position}`,
         `offline-indicator--${variant}`,
         { 'offline-indicator--persistent': isPersistent }
-      ]
+      ]"
       role="status"
       aria-live="polite"
       :aria-label="statusMessage"
@@ -62,7 +62,7 @@
         <span class="quality-text">{{ qualityText }}</span>
       </div>
     </div>
-  </Transition>
+  </div></Transition>
 </template>
 
 <script setup lang="ts">

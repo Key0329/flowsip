@@ -106,48 +106,47 @@ export default defineNuxtConfig({
       ]
     },
     
-    // Workbox 配置 (Service Worker)
+    // Workbox 配置 (Service Worker) - 簡化版本
     workbox: {
       navigateFallback: '/',
-      navigateFallbackDenylist: [/^\/api/],
       
-      // 快取策略
+      // 基本快取策略
       runtimeCaching: [
-        // 音效檔案 - 快取優先
+        // 音效檔案
         {
-          urlPattern: /^https:\/\/.*\.(?:mp3|wav|ogg)$/,
+          urlPattern: /\.(mp3|wav|ogg)$/,
           handler: 'CacheFirst',
           options: {
             cacheName: 'audio-cache',
             expiration: {
-              maxEntries: 10,
-              maxAgeSeconds: 60 * 60 * 24 * 30 // 30天
+              maxEntries: 30,
+              maxAgeSeconds: 60 * 60 * 24 * 30
             }
           }
         },
         
-        // 圖片 - 快取優先
+        // 圖片檔案
         {
-          urlPattern: /^https:\/\/.*\.(?:png|jpg|jpeg|svg|gif|webp)$/,
+          urlPattern: /\.(png|jpg|jpeg|svg|gif|webp|ico)$/,
           handler: 'CacheFirst',
           options: {
             cacheName: 'images-cache',
             expiration: {
-              maxEntries: 50,
-              maxAgeSeconds: 60 * 60 * 24 * 30 // 30天
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 60 * 24 * 30
             }
           }
         },
         
-        // API 請求 - 網路優先
+        // 字型檔案
         {
-          urlPattern: /^https:\/\/.*\/api\/.*/,
-          handler: 'NetworkFirst',
+          urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
+          handler: 'CacheFirst',
           options: {
-            cacheName: 'api-cache',
+            cacheName: 'fonts-cache',
             expiration: {
-              maxEntries: 20,
-              maxAgeSeconds: 60 * 60 * 24 // 1天
+              maxEntries: 10,
+              maxAgeSeconds: 60 * 60 * 24 * 365
             }
           }
         }
@@ -155,25 +154,14 @@ export default defineNuxtConfig({
       
       // 預快取檔案
       globPatterns: [
-        '**/*.{js,css,html,png,svg,ico}',
-        'sounds/*.{mp3,wav,ogg}',
-        'icons/*.png'
+        '**/*.{js,css,html}',
+        'sounds/*.{mp3,ogg}',
+        'icons/*.{svg,png}'
       ],
       
-      // 排除不需要快取的檔案
-      globIgnores: [
-        '**/node_modules/**/*',
-        'sw.js',
-        'workbox-*.js'
-      ],
-      
-      // 清理過期快取
+      // 清理設定
       cleanupOutdatedCaches: true,
-      
-      // 跳過等待
       skipWaiting: true,
-      
-      // 立即控制客戶端
       clientsClaim: true
     },
     
@@ -195,10 +183,55 @@ export default defineNuxtConfig({
     // 配置將在單獨的檔案中設定
   },
 
-  // Vite 配置（用於 Web Worker）
+  // Vite 配置（用於 Web Worker 和程式碼分割優化）
   vite: {
     worker: {
       format: 'es'
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          // 手動程式碼分割 (基於模組 ID)
+          manualChunks(id) {
+            // Vue 核心庫
+            if (id.includes('node_modules/vue/') || id.includes('node_modules/@vue/')) {
+              return 'vue-vendor'
+            }
+            // 統計相關模組
+            if (id.includes('composables/useStats') || id.includes('components/Stats/')) {
+              return 'stats'
+            }
+            // 設定和主題相關
+            if (id.includes('composables/useSettings') || id.includes('composables/useTheme') || id.includes('components/Settings/')) {
+              return 'settings'
+            }
+            // 音效和通知相關
+            if (id.includes('composables/useSounds') || id.includes('composables/useNotifications')) {
+              return 'media'
+            }
+            // PWA 相關元件
+            if (id.includes('components/PWA/') || id.includes('components/Common/OfflineIndicator')) {
+              return 'pwa'
+            }
+            // 第三方庫
+            if (id.includes('node_modules')) {
+              return 'vendor'
+            }
+          }
+        }
+      },
+      // 啟用程式碼分割
+      cssCodeSplit: true,
+      // 資源內聯限制 (小於 4KB 的資源內聯)
+      assetsInlineLimit: 4096,
+      // 移除 console 和 debugger
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        }
+      }
     }
   },
 
@@ -211,5 +244,49 @@ export default defineNuxtConfig({
   typescript: {
     strict: false,
     typeCheck: false
+  },
+
+  // 實驗性功能和效能優化
+  experimental: {
+    // 啟用負載平衡
+    payloadExtraction: false,
+    // 啟用內聯根元件樣式
+    inlineSSRStyles: false
+  },
+
+  // Nitro 配置 (針對 SSG 模式優化)
+  nitro: {
+    // 預渲染路由
+    prerender: {
+      routes: ['/stats', '/settings', '/about']
+    },
+    // 壓縮設定
+    compressPublicAssets: true,
+    // 實驗性功能
+    experimental: {
+      wasm: false
+    }
+  },
+
+  // 路由配置
+  router: {
+    // 啟用路由預取
+    prefetchLinks: true,
+    // 懶載入頁面
+    options: {
+      strict: false
+    }
+  },
+
+  // 效能相關配置
+  app: {
+    // 頭部配置
+    head: {
+      // 預載入關鍵資源
+      link: [
+        { rel: 'preload', href: '/sounds/notification.mp3', as: 'audio' },
+        { rel: 'preload', href: '/sounds/tick.mp3', as: 'audio' }
+      ]
+    }
   }
 })

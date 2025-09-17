@@ -42,8 +42,8 @@
           <div class="install-prompt-actions">
             <button 
               class="install-btn install-btn--primary" 
-              @click="handleInstall"
               :disabled="isInstalling"
+              @click="handleInstall"
             >
               <Icon v-if="isInstalling" name="mdi:loading" class="animate-spin" />
               {{ isInstalling ? '安裝中...' : '立即安裝' }}
@@ -59,8 +59,8 @@
           <!-- 關閉按鈕 -->
           <button 
             class="install-prompt-close"
-            @click="handleNeverShow"
             :title="'不再提示'"
+            @click="handleNeverShow"
           >
             <Icon name="mdi:close" />
           </button>
@@ -122,7 +122,7 @@ const canShowInstallPrompt = computed(() => {
  * 檢查是否已經安裝
  */
 const isAlreadyInstalled = computed(() => {
-  if (!process.client) return false
+  if (!import.meta.client) return false
   
   // 檢查是否在 PWA 模式下運行
   return window.matchMedia('(display-mode: standalone)').matches ||
@@ -134,7 +134,7 @@ const isAlreadyInstalled = computed(() => {
  * 檢查是否設定為不再顯示
  */
 const isNeverShow = computed(() => {
-  if (!process.client) return false
+  if (!import.meta.client) return false
   return localStorage.getItem('flowsip-install-never-show') === 'true'
 })
 
@@ -252,7 +252,7 @@ watch(shouldShowPrompt, (show) => {
  * 智能提示邏輯
  */
 function shouldShowSmartPrompt(): boolean {
-  if (!process.client || isNeverShow.value || isAlreadyInstalled.value) {
+  if (!import.meta.client || isNeverShow.value || isAlreadyInstalled.value) {
     return false
   }
   

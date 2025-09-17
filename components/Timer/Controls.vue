@@ -8,9 +8,11 @@
         :disabled="isDisabled"
         class="control-btn control-btn--primary control-btn--start"
         :class="{ 'control-btn--disabled': isDisabled }"
+        :aria-label="isPaused ? '繼續計時器' : '開始計時器'"
+        :aria-describedby="isDisabled ? 'timer-disabled-reason' : undefined"
         @click="handleStart"
       >
-        <Icon name="mdi:play" class="btn-icon" />
+        <Icon name="mdi:play" class="btn-icon" aria-hidden="true" />
         <span class="btn-text">{{ isPaused ? '繼續' : '開始' }}</span>
       </button>
 
@@ -20,9 +22,11 @@
         :disabled="isDisabled"
         class="control-btn control-btn--warning control-btn--pause"
         :class="{ 'control-btn--disabled': isDisabled }"
+        aria-label="暫停計時器"
+        :aria-describedby="isDisabled ? 'timer-disabled-reason' : undefined"
         @click="handlePause"
       >
-        <Icon name="mdi:pause" class="btn-icon" />
+        <Icon name="mdi:pause" class="btn-icon" aria-hidden="true" />
         <span class="btn-text">暫停</span>
       </button>
 
@@ -32,9 +36,11 @@
         :disabled="isDisabled"
         class="control-btn control-btn--danger control-btn--stop"
         :class="{ 'control-btn--disabled': isDisabled }"
+        aria-label="停止計時器"
+        :aria-describedby="isDisabled ? 'timer-disabled-reason' : undefined"
         @click="handleStop"
       >
-        <Icon name="mdi:stop" class="btn-icon" />
+        <Icon name="mdi:stop" class="btn-icon" aria-hidden="true" />
         <span class="btn-text">停止</span>
       </button>
 

@@ -120,8 +120,8 @@
           <!-- 關閉按鈕 -->
           <button 
             class="onboarding-close"
-            @click="handleSkip"
             :title="'跳過引導'"
+            @click="handleSkip"
           >
             <Icon name="mdi:close" />
           </button>
@@ -303,7 +303,7 @@ async function handleSkip() {
   props.onSkip?.()
   
   // 記錄用戶跳過了引導
-  if (process.client) {
+  if (import.meta.client) {
     localStorage.setItem('flowsip-onboarding-skipped', 'true')
     localStorage.setItem('flowsip-onboarding-skip-date', new Date().toISOString())
   }
@@ -318,7 +318,7 @@ async function handleComplete() {
   props.onComplete?.()
   
   // 記錄用戶完成了引導
-  if (process.client) {
+  if (import.meta.client) {
     localStorage.setItem('flowsip-onboarding-completed', 'true')
     localStorage.setItem('flowsip-onboarding-complete-date', new Date().toISOString())
   }
@@ -339,7 +339,7 @@ async function closeOnboarding() {
  * 檢查是否應該顯示引導
  */
 function shouldShowOnboarding(): boolean {
-  if (!process.client) return false
+  if (!import.meta.client) return false
   
   // 檢查是否已經完成或跳過引導
   const completed = localStorage.getItem('flowsip-onboarding-completed')
@@ -360,7 +360,7 @@ function shouldShowOnboarding(): boolean {
  * 重置引導狀態（開發用）
  */
 function resetOnboarding() {
-  if (!process.client) return
+  if (!import.meta.client) return
   
   localStorage.removeItem('flowsip-onboarding-completed')
   localStorage.removeItem('flowsip-onboarding-skipped')
